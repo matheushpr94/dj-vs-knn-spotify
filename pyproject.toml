@@ -1,0 +1,18 @@
+[project]
+name = "dj-vs-knn-spotify"
+version = "1.0.0"
+description = "Quando 'soa parecido' nao e' 'mixa bem': kNN de audio features contra a regra de DJ, no Spotify Tracks Dataset"
+requires-python = ">=3.12"
+dependencies = [
+    "altair>=6.2.2",
+    "marimo>=0.24.0",
+    "networkx>=3.6.1",
+    "numpy>=2.5.2",
+    "pandas>=3.0.5",
+    "pandera>=0.32.1",
+    "scikit-learn>=1.9.0",
+    "scipy>=1.18.1",
+]
+
+[dependency-groups]
+figuras = ["vl-convert-python>=1.7"]

@@ -1,0 +1,62 @@
+==============================================================================
+PERGUNTA   As tarefas nao supervisionadas tem sinal, ou o algoritmo sempre
+           devolve alguma coisa?
+COMO       Compara silhueta, variancia do PCA e metricas de rede contra o
+           MESMO calculo em dado embaralhado.
+LER ASSIM  K-Means sempre devolve grupos, inclusive em ruido. So' a
+           comparacao com o embaralhado diz se ha estrutura.
+PISO       Dado com as colunas embaralhadas preserva as distribuicoes e
+           destroi a correlacao — e' o piso certo.
+
+COMO LER OS NÚMEROS
+  silhueta  quao bem separados estao os grupos que uma clusterizacao achou
+     ler    vai de -1 a 1. Acima de 0,5 e' estrutura clara. Abaixo de 0,2 e'
+            o algoritmo fatiando uma nuvem continua
+  cuidado   K-Means SEMPRE devolve grupos, ate' em ruido puro. Compare com a
+            silhueta do mesmo dado embaralhado — se a diferenca for pequena,
+            nao ha' estrutura
+
+  variancia_explicada
+            no PCA, quanto de toda a variacao cada eixo novo captura
+     ler    PC1 e' o eixo que mais captura. Somando ate' 80% voce sabe
+            quantas dimensoes reais existem
+  cuidado   poucos PCs para 80% significa colunas redundantes. Muitos
+            significa que cada coluna carrega algo proprio — foi o caso aqui,
+            5 PCs
+
+  transitividade
+            a chance de que dois amigos de alguem tambem sejam amigos entre
+            si
+     ler    0 a 1. Alta significa panelinhas fechadas; baixa significa rede
+            espalhada
+  cuidado   so' significa algo contra um MODELO NULO — a mesma rede com as
+            conexoes embaralhadas, preservando quantas cada um tem
+
+  componente
+            componente conexo: um pedaco da rede onde todos alcancam todos,
+            direta ou indiretamente
+     ler    o 'maior componente' e' a parte principal. Quem fica fora esta'
+            isolado
+  cuidado   componente grande nao e' sinal de boa conexao — compare com o
+            modelo nulo. Aqui o real conecta MENOS que o embaralhado
+==============================================================================
+
+89,583 faixas
+
+=== AGRUPAMENTO: existe estrutura, ou K-Means so' fatia a nuvem? ===
+  silhueta k=14, dado real             : 0.163
+  silhueta k=14, colunas embaralhadas  : 0.116
+  silhueta com rotulo sorteado          : -0.021
+
+=== REDUCAO DE DIMENSAO: PCA contra colunas independentes ===
+  PC1+PC2 no dado real          : 47.9%
+  PC1+PC2 com colunas embaralhadas: 22.5%  <- o piso
+  PCs para 80% real              : 5
+  PCs para 80% embaralhado       : 8
+
+=== REDE: o componente gigante e' estrutura ou consequencia do grau? ===
+  grafo: 19,281 artistas · 32,521 colaboracoes
+  maior componente, real           : 61.7%
+  maior componente, modelo nulo    : 93.8%  <- mesma sequencia de graus
+  transitividade real              : 0.2342
+  transitividade do modelo nulo    : 0.0017

@@ -1,0 +1,18 @@
+==============================================================================
+PERGUNTA   As faixas com popularidade zero sao musicas impopulares, ou copias
+           delistadas de hits?
+COMO       Para cada faixa zerada, procura no proprio arquivo outra com mesmo
+           nome e artista e popularidade maior que zero.
+LER ASSIM  Se a gemea viva existe e e' popular, o zero nao era impopularidade
+           — era indisponibilidade daquele track_id.
+PISO       Se fossem musicas realmente impopulares, quase nenhuma teria gemea
+           viva.
+==============================================================================
+
+zeradas no grupo 4-7 generos : 788
+  com gemea viva             : 408 (51.8%)
+  popularity mediana da gemea: 67
+
+teste decisivo — dedup por (nome, artista) em vez de track_id:
+  por track_id   1: 31 | 2-3: 44 | 4-7: 2 | 8-9: 67
+  por musica     1: 32 | 2-3: 46 | 4-7: 46 | 8-9: 70

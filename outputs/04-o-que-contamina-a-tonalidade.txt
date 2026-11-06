@@ -1,0 +1,56 @@
+==============================================================================
+PERGUNTA   O que contamina a coluna key? As deteccoes que falharam viraram
+           'Do'?
+COMO       Fala nao tem tonalidade — entao se houvesse despejo em zero,
+           comedy estaria entupido de key=0. Testa isso.
+LER ASSIM  Se fala tem MENOS key=0 que musica, nao houve despejo. A
+           contaminacao esta' em outro lugar.
+PISO       Distribuicao uniforme entre 12 tonalidades = 8,3% cada.
+
+COMO LER OS NÚMEROS
+  acaso     o que voce acertaria chutando, sem modelo nenhum
+     ler    todo resultado de acerto so' significa alguma coisa AO LADO dele.
+            Exemplo de conta: 35% parece pouco, mas contra 0,88% de acaso e'
+            40x. O numero DESTA rodada sai abaixo
+  cuidado   resultado sem acaso declarado nao pode ser avaliado. Se alguem
+            mostrar so' a acuracia, pergunte qual era o acaso
+==============================================================================
+
+89,741 faixas unicas
+
+=== 1. distribuicao das 12 tonalidades ===
+   0 Do   10,352   11.5%  #######################
+   1 Do#   8,576    9.6%  ###################
+   2 Re    9,327   10.4%  ####################
+   3 Re#   2,769    3.1%  ######
+   4 Mi    7,133    7.9%  ###############
+   5 Fa    7,308    8.1%  ################
+   6 Fa#   6,139    6.8%  #############
+   7 Sol  10,551   11.8%  #######################
+   8 Sol#  5,570    6.2%  ############
+   9 La    8,998   10.0%  ####################
+  10 La#   5,889    6.6%  #############
+  11 Si    7,129    7.9%  ###############
+
+  marcador oficial de ausencia (key = -1): 0
+
+=== 2. TESTE: fala nao tem tonalidade. E comedy? ===
+  comedy      n=  990   key=0 em   6.2%   (esperado ~8.3% se uniforme)
+  sleep       n=  997   key=0 em  11.9%   (esperado ~8.3% se uniforme)
+  ambient     n=  998   key=0 em  11.9%   (esperado ~8.3% se uniforme)
+  classical   n=  867   key=0 em  11.6%   (esperado ~8.3% se uniforme)
+  pop         n=  596   key=0 em  11.1%   (esperado ~8.3% se uniforme)
+
+  recorte mais duro — so' as faixas que sao quase pura fala:
+    speechiness > 0,66: 868 faixas · key=0 em 6.1%
+    speechiness < 0,10: 70,977 faixas · key=0 em 12.3%
+
+=== 3. key=0 coincide com as falhas ja conhecidas? ===
+  faixas com tempo=0 ou time_signature=0: 162
+    delas com key=0: 10.5%
+  catalogo inteiro com key=0            : 11.5%
+
+=== 4. tonalidades enarmonicas: o que a coluna nao consegue distinguir ===
+  teclas pretas (Do#, Re#, Fa#, Sol#, La#): 32.3% do catalogo
+  cada uma junta dois nomes — Do# e Reb sao o mesmo numero, e em
+  partitura sao escolhas diferentes. A coluna nao guarda essa diferenca.

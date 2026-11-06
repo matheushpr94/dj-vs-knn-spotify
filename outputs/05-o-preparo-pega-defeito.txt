@@ -1,0 +1,69 @@
+==============================================================================
+PERGUNTA   O esquema pega o que deveria pegar? E as visoes ainda devolvem o
+           que prometem?
+COMO       Injeta defeito de proposito e verifica se a validacao levanta;
+           depois confere a cardinalidade de cada visao.
+LER ASSIM  Teste que passa em tudo sem nunca ter falhado nao prova nada — por
+           isso ha casos propositalmente ruins.
+PISO       Cada caso declara o esperado ao lado do obtido.
+==============================================================================
+
+=== 1. defeito e 'fora do cartao' sao coisas DIFERENTES ===
+    o filtro tira falha de extracao comprovada, nao tudo que o cartao proibe
+  [ok ] nenhum defeito sobra apos a remocao                  esperado 0              obtido 0
+  [ok ] mas 1.063 linhas seguem fora do cartao               esperado 1063           obtido 1063
+  [ok ] e elas sao musica real, nao lixo (todas com tempo)   esperado True           obtido True
+
+=== 2. valor fora do dominio e' pego, coluna por coluna ===
+    a amostra de 500 ja' tem 6 linha(s) fora do cartao; esperado = base + 1
+  [ok ] time_signature = 9                                   esperado 7              obtido 7
+  [ok ] popularity = 101                                     esperado 7              obtido 7
+  [ok ] key = 12                                             esperado 7              obtido 7
+  [ok ] mode = 2                                             esperado 7              obtido 7
+  [ok ] danceability = 1.5                                   esperado 7              obtido 7
+  [ok ] loudness = 3.2                                       esperado 7              obtido 7
+  [ok ] tempo = 0.0                                          esperado 7              obtido 7
+  [ok ] duration_ms = 0                                      esperado 7              obtido 7
+
+=== 3. nulo indevido em coluna nao-nulavel ===
+  [ok ] track_genre nulo                                     esperado 7              obtido 7
+
+=== 4. falha ESTRUTURAL levanta, nao devolve indice vazio ===
+    o caso perigoso: sem a guarda, a tabela errada passaria batido
+  [ok ] coluna renomeada levanta ValueError                  esperado ValueError     obtido ValueError
+       tabela fora do esquema, nao e' problema de linha:
+
+=== 5. cardinalidade das visoes ===
+    a chave de dedup ja' inverteu conclusao DUAS vezes nesta analise.
+    se um destes numeros mudar sem ninguem decidir, foi acidente.
+  [ok ] carregar() — sem as 450 identicas                    esperado 113550         obtido 113550
+  [ok ] carregar(remover_impossiveis) tira 158               esperado 158            obtido 158
+  [ok ] por_faixa_genero = uma linha por (faixa, genero)     esperado 113550         obtido 113550
+  [ok ] por_faixa — uma linha por track_id                   esperado 89741          obtido 89741
+  [ok ] por_musica — so' as vivas, por (nome, artista)       esperado 76444          obtido 76444
+  [ok ] por_musica < por_faixa (musica agrega gravacoes)     esperado True           obtido True
+  [ok ] por_artista > por_faixa (o ';' desmembra)            esperado True           obtido True
+
+=== 6. rotulo duplicado e derivadas ===
+    songwriter == singer-songwriter: 114 rotulos, 113 generos.
+    se o alias sumir do prepare, contagem por genero volta a dobrar mil faixas.
+  [ok ] os dois rotulos sao o MESMO conjunto                 esperado True           obtido True
+  [ok ] genero_canonico deixa 113 rotulos                    esperado 113            obtido 113
+  [ok ] genero_canonico nao perde linha                      esperado 113550         obtido 113550
+  [ok ] instrumental = 18,5% das faixas                      esperado 16633          obtido 16633
+  [ok ] tempo_dj: ou cai na janela, ou e' NaN                esperado True           obtido True
+  [ok ] NaN so' nas 157 com tempo 0 (sentinela)              esperado 157            obtido 157
+  [ok ] nenhum tempo_dj igual a zero                         esperado 0              obtido 0
+
+=== 7. a visao independe da ORDEM em que o arquivo chega ===
+    'kind=stable' garante mesma-entrada->mesma-saida, e NAO independencia
+    de ordem. Sem desempate explicito, o genero mudava so' por a linha
+    chegar em outra posicao — e o TAMANHO do estrago depende da visao,
+    porque os universos sao diferentes. Medido no pior de 3
+    embaralhamentos: ~8.800 de 89.741 em `por_faixa` (9,8%) e ~7.000 de
+    81.344 em `por_musica` sem filtrar vivas (8,6%). O numero oscila com
+    o sorteio; o que NAO oscila e' que com desempate total ele e' zero.
+  [ok ] por_faixa — generos que mudam por ordem              esperado 0              obtido 0
+  [ok ] por_musica — generos que mudam por ordem             esperado 0              obtido 0
+
+=== TODOS OS CASOS PASSARAM ===

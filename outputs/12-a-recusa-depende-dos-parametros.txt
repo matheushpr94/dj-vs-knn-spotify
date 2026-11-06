@@ -1,0 +1,41 @@
+==============================================================================
+PERGUNTA   Como o veredito muda quando mexemos em cada parametro da regra?
+COMO       Grade completa: 6 margens de BPM x 3 regras de tonalidade x 4
+           valores de k.
+LER ASSIM  Resultado que muda pouco entre celulas e' robusto. Celula muito
+           diferente das vizinhas merece desconfianca.
+PISO       Com 'ignorar tom' e margem larga, a recusa tende a zero — e' o
+           canto de controle da grade.
+
+COMO LER OS NÚMEROS
+  acaso     o que voce acertaria chutando, sem modelo nenhum
+     ler    todo resultado de acerto so' significa alguma coisa AO LADO dele.
+            Exemplo de conta: 35% parece pouco, mas contra 0,88% de acaso e'
+            40x. O numero DESTA rodada sai abaixo
+  cuidado   resultado sem acaso declarado nao pode ser avaliado. Se alguem
+            mostrar so' a acuracia, pergunte qual era o acaso
+==============================================================================
+
+catálogo: 4,285 faixas · grade de 72 células
+
+    k  margem  regra             recusa
+    6     2%  roda completa     84.7%
+    6     2%  mesma posição     95.0%
+    6     2%  ignorar tom       28.0%
+    6     4%  roda completa     80.1%
+    6     4%  mesma posição     93.7%
+    6     4%  ignorar tom        5.9%
+    6     6%  roda completa     79.3%
+    6     6%  mesma posição     93.4%
+    6     6%  ignorar tom        1.5%
+    6     8%  roda completa     79.0%
+    6     8%  mesma posição     93.3%
+    6     8%  ignorar tom        0.4%
+    6    10%  roda completa     79.0%
+    6    10%  mesma posição     93.3%
+    6    10%  ignorar tom        0.1%
+    6    12%  roda completa     79.0%
+    6    12%  mesma posição     93.3%
+    6    12%  ignorar tom        0.0%
+
+  outputs/grade.json escrito · 72 células

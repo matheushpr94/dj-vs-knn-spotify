@@ -1,0 +1,54 @@
+==============================================================================
+PERGUNTA   Qual numero de grupos SE REPETE quando o sorteio muda? A silhueta
+           mede separacao e nao respondeu; estabilidade mede se o agrupamento
+           e' real ou recorte da amostra.
+COMO       Para cada k, agrupa 12 pares de amostras que se sobrepoem e
+           compara os rotulos na intersecao com o ARI (Adjusted Rand Index).
+LER ASSIM  ARI 1,0 e' concordancia perfeita; 0,0 e' o esperado de dois
+           sorteios independentes. NAO escolha o maior ARI — ele sempre cai
+           com k. Procure onde a curva DESPENCA: o ultimo k antes do tombo e'
+           o que o dado sustenta.
+PISO       Zero, por construcao. O 'Adjusted' do ARI ja' desconta o acaso,
+           entao nao e' preciso dado embaralhado como na silhueta.
+
+COMO LER OS NÚMEROS
+==============================================================================
+
+
+    k  ARI medio   desvio    queda
+  ----------------------------------------------------
+    2      0.968    0.030   +0.000 ######################################  (abaixo do minimo util)
+    3      0.777    0.251   -0.191 ###############################  (abaixo do minimo util)
+    4      0.810    0.131   +0.033 ################################  (abaixo do minimo util)
+    5      0.800    0.158   -0.010 ################################
+    6      0.659    0.164   -0.141 ##########################
+    7      0.939    0.034   +0.280 #####################################  <- ESCOLHIDO: pico na faixa util
+    8      0.929    0.066   -0.010 #####################################
+    9      0.875    0.101   -0.055 ##################################
+   10      0.767    0.095   -0.107 ##############################
+   11      0.844    0.114   +0.077 #################################
+   12      0.760    0.102   -0.084 ##############################
+   13      0.693    0.099   -0.068 ###########################
+   14      0.714    0.111   +0.021 ############################
+   15      0.697    0.093   -0.017 ###########################
+   16      0.629    0.083   -0.068 #########################
+
+   grupo minimo  grupos achados    ruido
+  ----------------------------------------
+             50               2    0.7%
+            100               2   37.7%
+            200               0  100.0%
+            400               0  100.0%
+
+==========================================================================
+COMO ESTA RESPOSTA SE COMPARA COM A DA SILHUETA
+==========================================================================
+  A silhueta (p16_quantos_grupos_pela_silhueta.py) mede SEPARACAO e deu faixa 6-10, com o pico
+  pulando conforme a semente. Esta mede REPETICAO e nao depende de piso
+  embaralhado, porque o ARI ja' desconta o acaso.
+
+  Se as duas apontarem para a mesma regiao, a escolha fica sustentada por
+  dois criterios independentes — que e' o mais forte que da' para dizer.
+  Se apontarem para lugares diferentes, isso tambem e' resultado: quer
+  dizer que 'grupos separados' e 'grupos reais' nao sao a mesma coisa
+  neste dado, e ai' a pergunta certa passa a ser PARA QUE serve o grupo.

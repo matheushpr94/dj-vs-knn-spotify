@@ -1,0 +1,63 @@
+==============================================================================
+PERGUNTA   Este arquivo e' o que ele promete ser? Quantas linhas, quantas
+           colunas, o que falta e o que se repete.
+COMO       Contagens diretas com pandas: shape, nulos, duplicatas,
+           distribuicao de popularity e correlacao com as audio features.
+LER ASSIM  Numero de linhas diferente do numero de track_id unicos significa
+           repeticao — e repeticao precisa de explicacao antes de qualquer
+           conta.
+PISO       Um arquivo saudavel teria linhas == ids unicos e nenhum valor
+           sentinela.
+
+COMO LER OS NÚMEROS
+  pearson   correlacao linear entre duas colunas numericas, de -1 a +1
+     ler    0 = sem relacao linear. 0,5 e' relacao moderada. O sinal diz a
+            direcao
+  cuidado   so' enxerga RETA. E e' sensivel a massa concentrada num valor —
+            se 34% da coluna e' zero exato, ele mede a distancia entre dois
+            grupos, nao uma tendencia
+==============================================================================
+
+shape: 114,000 linhas x 20 colunas
+
+=== nulos ===
+artists       1
+album_name    1
+track_name    1
+dtype: int64
+
+=== duplicatas ===
+linhas totais          : 114,000
+track_id unicos        : 89,741
+track_id repetidos     : 24,259
+dup por (nome, artista): 32,656
+linhas 100% identicas  : 450
+
+=== generos ===
+114 generos | min 1000 | max 1000 por genero
+
+=== popularity ===
+count    114000.00
+mean         33.24
+std          22.31
+min           0.00
+25%          17.00
+50%          35.00
+75%          50.00
+max         100.00
+faixas com popularity == 0: 16,020 (14.1%)
+
+=== correlacao com popularity (Pearson) ===
+instrumentalness   -0.095
+loudness            0.050
+speechiness        -0.045
+valence            -0.041
+danceability        0.035
+acousticness       -0.025
+tempo               0.013
+duration_ms        -0.007
+liveness           -0.005
+energy              0.001
+
+=== variancia de popularity explicada por genero ===
+eta^2 (genero) = 0.254

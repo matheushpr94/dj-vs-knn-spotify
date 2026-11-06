@@ -1,0 +1,148 @@
+==============================================================================
+PERGUNTA   Quantos grupos naturais o dado sustenta, e as musicas dentro de
+           cada um sao mesmo parecidas?
+COMO       Varre k de 2 a 30, calcula a silhueta de cada um e a do MESMO k
+           sobre o dado com as colunas embaralhadas. Escolhe pelo maior ganho
+           sobre o piso, nao pela maior silhueta.
+LER ASSIM  Silhueta vai de -1 a 1. Acima de 0,5 e' estrutura clara; abaixo de
+           0,2 e' o algoritmo fatiando uma nuvem continua. O que decide nao
+           e' o valor e sim a DISTANCIA ATE' O PISO.
+PISO       O mesmo k sobre o dado com cada coluna embaralhada em separado —
+           mesmas distribuicoes, correlacao destruida. K-Means devolve grupos
+           ate' em ruido, entao sem este piso nenhum numero significa nada.
+
+COMO LER OS NÚMEROS
+  silhueta  quao bem separados estao os grupos que uma clusterizacao achou
+     ler    vai de -1 a 1. Acima de 0,5 e' estrutura clara. Abaixo de 0,2 e'
+            o algoritmo fatiando uma nuvem continua
+  cuidado   K-Means SEMPRE devolve grupos, ate' em ruido puro. Compare com a
+            silhueta do mesmo dado embaralhado — se a diferenca for pequena,
+            nao ha' estrutura
+==============================================================================
+
+
+    k   silhueta     piso    ganho   
+  ----------------------------------------------
+    2      0.250    0.214   +0.035 #######  (abaixo do minimo util)
+    3      0.203    0.167   +0.036 #######  (abaixo do minimo util)
+    4      0.217    0.176   +0.041 ########  (abaixo do minimo util)
+    5      0.227    0.191   +0.036 #######
+    6      0.239    0.174   +0.065 #############
+    7      0.246    0.163   +0.083 ################  <- tambem plausivel
+    8      0.253    0.161   +0.092 ##################  <- pico desta semente
+    9      0.225    0.166   +0.059 ###########
+   10      0.228    0.169   +0.058 ###########
+   11      0.219    0.165   +0.054 ##########
+   12      0.202    0.163   +0.039 #######
+   13      0.207    0.162   +0.045 ########
+   14      0.197    0.161   +0.035 #######
+   15      0.193    0.158   +0.035 #######
+   16      0.195    0.155   +0.040 #######
+   17      0.194    0.152   +0.042 ########
+   18      0.189    0.150   +0.039 #######
+   19      0.194    0.153   +0.041 ########
+   20      0.192    0.149   +0.043 ########
+   21      0.189    0.150   +0.039 #######
+   22      0.193    0.154   +0.040 #######
+   23      0.187    0.153   +0.035 ######
+   24      0.182    0.153   +0.029 #####
+   25      0.185    0.155   +0.030 #####
+   26      0.187    0.150   +0.038 #######
+   27      0.184    0.151   +0.033 ######
+   28      0.178    0.152   +0.026 #####
+   29      0.176    0.151   +0.025 #####
+   30      0.180    0.148   +0.032 ######
+
+  grupo  faixas  o que marca (em desvios-padrao)              genero mais comum   
+  ------------------------------------------------------------------------------------
+      1     877  +instrumentalness +acousticness -energy -danceability ambient             
+      2    2276  +acousticness -energy -instrumentalness      acoustic            
+      3     744  +speechiness +danceability -instrumentalness j-dance             
+      4     136  +speechiness +liveness -instrumentalness     comedy              
+      5    3257  +valence +danceability -instrumentalness     salsa               
+      6     762  +liveness +energy -danceability              pagode              
+      7    1300  +instrumentalness +energy -acousticness -valence minimal-techno      
+      8    2648  +energy -acousticness -danceability          heavy-metal         
+
+  MUSICAS DE CADA GRUPO — confira com o ouvido se fazem sentido
+
+  grupo 1 · +instrumentalness +acousticness -energy -danceability · coesao 0.70
+      Yamasá                                     Teide                    piano
+      Jezus Malusieńki (Reworked by Hania Rani & Hania Rani;Dobrawa Czoch ambient
+      Still, still, still - Instrumental         Traditional;Christoph Is sleep
+      Moment To Moment                           Modal Colours            sleep
+      Ark                                        Halls                    idm
+      La clemenza di Tito, K.621 / Act 1: Marcia Wolfgang Amadeus Mozart; classical
+
+  grupo 2 · +acousticness -energy -instrumentalness · coesao 0.72
+      You Comb Her Hair                          George Jones             honky-tonk
+      Malamorado                                 Cyclo                    spanish
+      If I Painted a Picture                     George Jones             honky-tonk
+      Oru Athijeevana Kadha                      Bharath Sajikumar        malay
+      你說之後會找我                                    my little airport        cantopop
+      You're the Best Thing That Ever Happened t Ray Price                honky-tonk
+
+  grupo 3 · +speechiness +danceability -instrumentalness · coesao 0.76
+      C´est Fini                                 ZPU;Green Valley         spanish
+      No Rampin (feat. Moelogo & Nadia Rose)     Alicai Harley;Moelogo;Na dancehall
+      Paranoia - Self Protection P2              Chronic Law              dancehall
+      Cantando pro Santo                         Sabotage;Chorão          brazil
+      shedontknowbutsheknows                     Tove Lo                  synth-pop
+      Singing in the Rain                        Tessarose                children
+
+  grupo 4 · +speechiness +liveness -instrumentalness · coesao 0.64
+      Only in America                            Dwayne Perkins           comedy
+      Lesbians Love Whale Watching               Margaret Cho             comedy
+      Learning About Sex (Jfl 2006)              Tommy Tiernan            comedy
+      Tips On Marriage - Live                    Rodney Carrington        comedy
+      Mushrooms, Vegan                           Shane Mauss              comedy
+      Jack In the Box                            George Lopez             comedy
+
+  grupo 5 · +valence +danceability -instrumentalness · coesao 0.76
+      Picky                                      Joey Montana             latino
+      En la Cárcel de Tu Piel                    Adalberto Santiago       salsa
+      Loco por Tu Amor                           Eddie Santiago;Tito Gome salsa
+      Te Acordaras de Mí                         Los Brios                rock-n-roll
+      Corazón (feat. Rubén Albarrán y Quique Ran Los Auténticos Decadente ska
+      Frosty The Snowman - 1991 Remix            The Beach Boys           psych-rock
+
+  grupo 6 · +liveness +energy -danceability · coesao 0.80
+      Reinventar / Pra Ver O Sol Brilhar / Perfu Belo                     pagode
+      We Can Get Together - Live                 ICEHOUSE                 synth-pop
+      戦争を知らない大人たち                                My Hair is Bad           j-rock
+      爸我回來了                                      Jay Chou                 mandopop
+      Esquinas (Ao Vivo)                         Djavan                   mpb
+      Reinventar / Ligando os Fatos - Ao Vivo    Akatu                    samba
+
+  grupo 7 · +instrumentalness +energy -acousticness -valence · coesao 0.78
+      Da.vironment                               Proem                    idm
+      Breaking the Circle                        Ocoeur                   idm
+      Fight Fire With Fire - Remastered          Metallica                hard-rock
+      Knackfrisch                                Extrawelt                minimal-techno
+      Ponderous - Extended Mix                   Kevin Saunderson;e-Dance detroit-techno
+      Paradise                                   Octave One               detroit-techno
+
+  grupo 8 · +energy -acousticness -danceability · coesao 0.77
+      Tek It                                     Cafuné                   indie
+      Sparks                                     Code Black;Darren Styles hardstyle
+      箱子                                         Mixer                    mandopop
+      Rich/Poor                                  Trampled by Turtles      bluegrass
+      Vill vi samma sak                          Newkid                   swedish
+      Measure Of A Man (Cinematic)               FKA twigs                trip-hop
+
+==============================================================================
+COMO LER ESTE RESULTADO
+==============================================================================
+  O k NAO E' UM PONTO, E' UMA FAIXA: [7, 8]. Com o pipeline ANTERIOR
+  (9 features) o pico mudava com a semente — 10, 8, 6 e 8, ganhos entre
+  +0,068 e +0,080. A varredura de sementes NAO foi refeita sob as 7
+  features; o que se sabe hoje e' que ARI pica em 7 e silhueta em 8 —
+  diferenca dentro do ruido do sorteio. Anunciar um k exato dentro da
+  faixa seria publicar a semente, nao o dado. Confira voce mesmo:
+      uv run python src/p16_quantos_grupos_pela_silhueta.py --semente 7 --k-min 5 --k-max 14
+
+  A silhueta escolhida (0.253) esta' entre 0,2 e 0,5 — estrutura FRACA. Ha' separacao, e ela nao chega a ser clara.
+  Isso NAO invalida o agrupamento: ele serve para ORGANIZAR o catalogo,
+  e nao para afirmar que existem generos naturais.
+  O ganho sobre o piso (+0.092) e' o que diz que ha' estrutura
+  de verdade — pouca, mas real.

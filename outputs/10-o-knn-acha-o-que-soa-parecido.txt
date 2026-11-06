@@ -1,0 +1,110 @@
+==============================================================================
+PERGUNTA   Faixas acusticamente vizinhas fazem sentido como recomendacao?
+COMO       kNN euclidiano sobre as features padronizadas, avaliado por proxy:
+           o vizinho compartilha genero ou artista?
+LER ASSIM  Acerto muito acima do acaso significa que a vizinhanca acustica
+           captura algo real. Nao mede gosto — nao ha usuario no dataset.
+PISO       Probabilidade de dois track_id sorteados compartilharem genero ou
+           artista.
+
+COMO LER OS NÚMEROS
+  acaso     o que voce acertaria chutando, sem modelo nenhum
+     ler    todo resultado de acerto so' significa alguma coisa AO LADO dele.
+            Exemplo de conta: 35% parece pouco, mas contra 0,88% de acaso e'
+            40x. O numero DESTA rodada sai abaixo
+  cuidado   resultado sem acaso declarado nao pode ser avaliado. Se alguem
+            mostrar so' a acuracia, pergunte qual era o acaso
+==============================================================================
+
+
+==================================================================
+BASE ANTIGA — dedup por track_id (mantém cópias da mesma música)  —  89,584 itens
+==================================================================
+=== 1. os vizinhos acústicos fazem sentido? ===
+  compartilham gênero : 19.4%   acaso 1.36%   ->  14x
+  mesmo artista       : 6.46%   acaso 0.0175%  ->  369x
+  mesmo álbum         : 1.46%
+
+  ao menos 1 dos 10 vizinhos com gênero em comum: 59.6%
+  10 de 10 com gênero em comum                    : 3.5%
+
+=== 2. o modelo puxa para o popular? (viés de popularidade) ===
+  popularidade mediana das consultas  : nan
+  popularidade mediana das sugestões  : 36.3
+  correlação entre as duas            : +0.422
+  medianas quase iguais -> o modelo NAO empurra para o popular.
+  mas a correlacao alta indica que vizinhanca acustica local carrega
+  algum sinal de popularidade, coerente com o RF sobre `por_musica`
+  (44,8% contra 25% de acaso — ver 16-recomputo.txt secao 3).
+
+=== 3. exemplos concretos ===
+
+  ▸ Tere Binaa — Mustafa Zahid  [pop-film, pop 63]
+        Let It Go                            Colin & Caroline         [acoustic]
+        Falling Man                          The Steeldrivers         [bluegrass]
+        Cô Ta                                Vũ.                      [singer-songwriter]
+        Come Out of the Dumpster             Laura Benanti;Stephen    [show-tunes]
+
+  ▸ walk away as the door slams — Lil Peep;Lil Tracy  [emo, pop 70]
+        Make Me Yours                        Borgeous;Zack Martino    [progressive-house]
+        Sad Story                            WE ARE FURY;Heather So   [dub]
+        Grande É o Senhor                    Gabriel Brito            [gospel]
+        Jiyein Kyun - Bollywood Lo-Fi;Chil   Axonn                    [indian]
+
+  ▸ You Proof — Morgan Wallen  [country, pop 86]
+        De Virada É Mais Gostoso - Ao Vivo   Janaynna                 [sertanejo]
+        Drift                                Syn Cole                 [deep-house]
+        Puxadinho (Ao Vivo)                  Murilo Huff              [sertanejo]
+        The Carnival                         Aazar;French Montana;M   [electronic]
+
+  ▸ Square Hammer — Ghost  [hard-rock, pop 66]
+      = Square Hammer                        Ghost                    [hard-rock]
+      = Square Hammer                        Ghost                    [hard-rock]
+      = Square Hammer                        Ghost                    [hard-rock]
+      = Square Hammer                        Ghost                    [hard-rock]
+
+==================================================================
+BASE CORRIGIDA — dedup por música (nome + artista)  —  76,444 itens
+==================================================================
+=== 1. os vizinhos acústicos fazem sentido? ===
+  compartilham gênero : 16.4%   acaso 1.29%   ->  13x
+  mesmo artista       : 2.02%   acaso 0.0150%  ->  134x
+  mesmo álbum         : 0.89%
+
+  ao menos 1 dos 10 vizinhos com gênero em comum: 57.5%
+  10 de 10 com gênero em comum                    : 1.7%
+
+=== 2. o modelo puxa para o popular? (viés de popularidade) ===
+  popularidade mediana das consultas  : 37.0
+  popularidade mediana das sugestões  : 38.7
+  correlação entre as duas            : +0.384
+  medianas quase iguais -> o modelo NAO empurra para o popular.
+  mas a correlacao alta indica que vizinhanca acustica local carrega
+  algum sinal de popularidade, coerente com o RF sobre `por_musica`
+  (44,8% contra 25% de acaso — ver 16-recomputo.txt secao 3).
+
+=== 3. exemplos concretos ===
+
+  ▸ Invincible — Adelitas Way  [grunge, pop 64]
+        This is Halloween                    Our Last Night           [metalcore]
+        Speed                                Atari Teenage Riot       [hardcore]
+        Another Life                         Motionless In White      [metal]
+        Ich mag kein Alkohol                 Feine Sahne Fischfilet   [german]
+
+  ▸ Legend — The Score  [alt-rock, pop 71]
+        Satisfied                            Chris Tomlin             [world-music]
+        Vogellisi                            Peter Wackel             [party]
+        Heartbeats                           The Knife                [goth]
+      = Scar Tissue                          Red Hot Chili Peppers    [alt-rock]
+
+  ▸ Dos Mil 16 — Bad Bunny  [latino, pop 87]
+      = Cinderella                           Cyril Kamer              [latino]
+        Come Over                            Rudimental;Anne-Marie;   [edm]
+        Naina Da Kya Kasoor                  Amit Trivedi             [pop]
+        Someone To You                       Great Good Fine Ok       [synth-pop]
+
+  ▸ Boss — Lil Pump  [emo, pop 61]
+        Spooky, Scary Skeletons - Undead T   Andrew Gold              [power-pop]
+        Kylie - Remix                        Akcent;Midi Culture      [disco]
+        Melodia                              Syn Cole                 [deep-house]
+        You Got Me Baby - Felon Remix        Lushington;Felon         [groove]

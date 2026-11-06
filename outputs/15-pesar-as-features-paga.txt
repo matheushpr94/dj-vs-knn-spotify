@@ -1,0 +1,39 @@
+==============================================================================
+PERGUNTA   Pesar as 9 colunas melhora o escore de pertencimento, ou tratar
+           todas igual ja' basta?
+COMO       Parte os generos em BUSCA e RESERVA. Procura pesos so' na busca
+           por tres caminhos (ablacao, importancia do RandomForest, 200
+           sorteios) e reporta o acerto na reserva, que a busca nunca viu.
+LER ASSIM  O numero que vale e' o da RESERVA. Ganho que aparece na busca e
+           some na reserva significa que os pesos decoraram ruido.
+PISO       Peso igual para as 9 colunas — o escore que ja' esta' publicado,
+           com 77,5% de acerto.
+
+COMO LER OS NÚMEROS
+==============================================================================
+
+
+  tirando a coluna         busca   vs igual   reserva   vs igual
+  --------------------------------------------------------------
+  tempo                    78.3%      +0.0%     76.6%      +0.1%
+  liveness                 78.3%      -0.0%     76.3%      -0.2%
+  energy                   77.6%      -0.7%     76.1%      -0.5%
+  speechiness              77.9%      -0.4%     76.0%      -0.5%
+  loudness                 78.6%      +0.3%     75.6%      -0.9%
+  valence                  77.2%      -1.1%     75.3%      -1.2%
+  danceability             76.4%      -1.9%     75.2%      -1.3%
+  acousticness             76.0%      -2.3%     75.1%      -1.4%
+  instrumentalness         76.6%      -1.8%     74.6%      -2.0%
+
+  ranking igual em 2 de 9 posicoes
+
+==========================================================================
+candidato                                 busca    reserva   ganho real
+--------------------------------------------------------------------------
+peso igual (o que esta publicado)         78.3%      76.5%            —
+importancia do RandomForest               78.3%      76.4%        -0.1%
+melhor de 200 sorteios                    79.3%      76.6%        +0.0%
+
+PESAR NAO PAGA. Nenhum candidato ganha mais que 1 ponto na reserva.
+O escore fica como esta': peso igual para as 9 colunas. Isso e'
+resultado — evita a proxima pessoa refazer a mesma varredura.

@@ -1,0 +1,28 @@
+==============================================================================
+PERGUNTA   Um filtro comum de curadoria, `popularity <= 10`, remove musica
+           pouco tocada (curadoria legitima) ou copia delistada de faixa
+           popular (erro)?
+COMO       Para cada faixa cortada, procura no arquivo outra com mesmo nome e
+           artista. Separa por FAIXA de popularidade da gemea, nao so' por
+           existir gemea.
+LER ASSIM  Gemea viva com popularidade 8 nao e' hit — e' a mesma musica pouco
+           tocada. So' gemea ACIMA do corte prova erro do filtro.
+PISO       Se o filtro estivesse certo, quase nenhuma cortada teria gemea bem
+           acima do corte.
+
+COMO LER OS NÚMEROS
+==============================================================================
+
+
+  exemplos de hit que o corte de popularidade derruba:
+  faixa                                        artista                     gemea
+  I'm Good (Blue)                              David Guetta;Bebe Rexha        98
+  I Ain't Worried                              OneRepublic                    96
+  PROVENZA                                     KAROL G                        93
+  Blinding Lights                              The Weeknd                     91
+  Ferrari                                      James Hype;Miggy Dela Rosa     90
+  Starboy                                      The Weeknd;Daft Punk           90
+  GATÚBELA                                     KAROL G;Maldy                  90
+  Until I Found You                            Stephen Sanchez                90
+  Something in the Orange                      Zach Bryan                     89
+  About Damn Time                              Lizzo                          89

@@ -1,0 +1,11 @@
+# dado bruto: baixado por baixar_dados.py, nunca versionado
+data/
+*.parcial
+.venv/
+__pycache__/
+*.pyc
+# experimentos locais (registro de tentativas e de rodadas): pessoais, nao resultado
+outputs/bancada.jsonl
+outputs/execucoes.csv
+notebooks/__marimo__/
+.DS_Store

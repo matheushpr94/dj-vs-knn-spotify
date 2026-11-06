@@ -1,0 +1,265 @@
+<title>Console de Parâmetros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--ground:#EDEFF3;--panel:#F7F8FA;--panel-2:#E4E7ED;--line:#CDD3DC;--line-soft:#DDE2E9;
+ --ink:#161A20;--ink-2:#454D59;--ink-3:#5C6470;--blue:#2A6AA6;--amber:#C07600;--amber-ink:#8F5800;
+ --critical:#B12C43;--critical-soft:#F3E0E4;--good:#0F7A6B;--good-soft:#DCEDEA;
+ --on-blue:#FFFFFF;--on-good:#EDEFF3;--on-crit:#FFFFFF;
+ --shadow:0 1px 2px rgba(22,26,32,.06),0 6px 18px -10px rgba(22,26,32,.18);--r:3px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --ground:#111419;--panel:#1A1E24;--panel-2:#232830;--line:#333A45;--line-soft:#272D36;
+ --ink:#E4E7EC;--ink-2:#A8B0BC;--ink-3:#868F9C;--blue:#5090D6;--amber:#BC8827;--amber-ink:#D9A344;
+ --critical:#E8788F;--critical-soft:#2E1F25;--good:#3BB49F;--good-soft:#16292A;
+ --on-blue:#111419;--on-good:#111419;--on-crit:#111419;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7)}}
+:root[data-theme="dark"]{--ground:#111419;--panel:#1A1E24;--panel-2:#232830;--line:#333A45;
+ --line-soft:#272D36;--ink:#E4E7EC;--ink-2:#A8B0BC;--ink-3:#868F9C;--blue:#5090D6;--amber:#BC8827;
+ --amber-ink:#D9A344;--critical:#E8788F;--critical-soft:#2E1F25;--good:#3BB49F;--good-soft:#16292A;
+ --on-blue:#111419;--on-good:#111419;--on-crit:#111419;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+ font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding:clamp(22px,3.6vw,46px) clamp(14px,3vw,32px) 66px;
+ display:flex;flex-direction:column;gap:clamp(24px,3.2vw,38px)}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,4.4vw,42px);font-weight:800;letter-spacing:-.025em;line-height:1.05}
+h2{font-size:clamp(17px,2.1vw,22px);font-weight:800}
+h3{font-size:14.5px;font-weight:800}
+p{margin:0;max-width:64ch}
+code{font-family:"IBM Plex Mono",monospace;font-size:.88em}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.lede{color:var(--ink-2);font-size:15.5px;max-width:64ch}
+header{display:flex;flex-direction:column;gap:13px;border-bottom:1px solid var(--line);padding-bottom:22px}
+section{display:flex;flex-direction:column;gap:15px}
+.panel{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);
+ box-shadow:var(--shadow);padding:clamp(15px,2vw,20px)}
+.lab{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:940px){.lab{grid-template-columns:340px 1fr}}
+/* controles */
+.ctrl{display:flex;flex-direction:column;gap:19px}
+.par{display:flex;flex-direction:column;gap:7px}
+.par-h{display:flex;align-items:baseline;justify-content:space-between;gap:9px}
+.par-h label{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;color:var(--ink)}
+.par-v{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--blue);font-weight:600}
+.tip{position:relative;display:inline-flex;align-items:center;justify-content:center;
+ width:15px;height:15px;border-radius:50%;border:1.4px solid var(--ink-3);color:var(--ink-3);
+ font-size:10px;font-weight:700;cursor:help;flex:none;font-family:"IBM Plex Sans",sans-serif}
+.tip:hover,.tip:focus{border-color:var(--blue);color:var(--blue);outline:none}
+.tip .box{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+ width:min(290px,78vw);background:var(--ink);color:var(--ground);padding:11px 13px;border-radius:var(--r);
+ font-size:12.5px;line-height:1.5;font-weight:400;opacity:0;pointer-events:none;transition:opacity .12s;
+ z-index:20;box-shadow:0 6px 20px rgba(0,0,0,.35);text-align:left}
+.tip .box b{color:var(--ground)}
+.tip:hover .box,.tip:focus .box{opacity:1}
+.tip .box::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+ border:6px solid transparent;border-top-color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.seg{display:flex;gap:5px;flex-wrap:wrap}
+.seg button{flex:1 1 0;min-width:64px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+ padding:7px 9px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-2);
+ border-radius:var(--r);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--blue);color:var(--on-blue);border-color:var(--blue);font-weight:600}
+.seg button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.par-eff{font-size:12px;color:var(--ink-3);line-height:1.45}
+/* resultado */
+.res{display:flex;flex-direction:column;gap:15px}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.bc{border:1px solid var(--line-soft);border-radius:var(--r);padding:15px;background:var(--panel);
+ display:flex;flex-direction:column;gap:4px}
+.bc>b.c-crit{color:var(--critical)}
+.bc>b.c-good{color:var(--good)}
+.bc>b.c-amber{color:var(--amber-ink)}
+.bc>b{font-family:"IBM Plex Mono",monospace;font-size:29px;font-weight:600;line-height:1;
+ font-variant-numeric:tabular-nums;transition:color .2s}
+.bc span{font-size:12px;color:var(--ink-2);line-height:1.35}
+.bc span b{font-family:inherit;font-size:inherit;color:var(--ink);font-weight:600}
+.barra{height:26px;display:flex;border-radius:var(--r);overflow:hidden;border:1px solid var(--line-soft)}
+.barra i{display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;
+ font-size:10.5px;font-weight:600;transition:width .25s;overflow:hidden;white-space:nowrap}
+.b-tom{background:var(--critical);color:var(--on-crit)}
+.b-bpm{background:var(--amber);color:var(--ink)}
+.b-ok{background:var(--good);color:var(--on-good)}
+/* codigo */
+pre{margin:0;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:var(--r);
+ padding:15px 17px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+ line-height:1.75;color:var(--ink-2)}
+pre .kw{color:var(--ink);font-weight:600}
+pre .val{background:var(--good-soft);color:var(--ink);padding:1px 5px;border-radius:3px;font-weight:600;box-shadow:inset 0 0 0 1px var(--good)}
+pre .cm{color:var(--ink-3);font-style:italic}
+/* historico */
+table{border-collapse:collapse;width:100%;font-family:"IBM Plex Mono",monospace;font-size:12px}
+th{text-align:left;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
+ font-weight:500;padding:0 10px 8px;border-bottom:1px solid var(--line)}
+td{padding:8px 10px;border-bottom:1px solid var(--line-soft);color:var(--ink-2);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+tr.now td{background:var(--good-soft);color:var(--ink);font-weight:600}
+.scroll{overflow-x:auto}
+.lg{display:inline-flex;align-items:center;gap:7px}
+.lg i{width:11px;height:11px;border-radius:3px;flex:none}
+.note{border:1px solid var(--amber);background:var(--panel);border-radius:var(--r);
+ padding:15px 17px;display:flex;flex-direction:column;gap:8px}
+.note h3{color:var(--amber-ink)}
+.note p{font-size:13.5px;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">console de experimento</div>
+  <h1>Console de Parâmetros</h1>
+  <p class="lede">Mexa nos controles e veja o resultado mudar. Cada parâmetro tem um
+  <strong>?</strong> que explica o que ele faz e como escolher. O código à direita mostra
+  onde o valor entra. As 72 combinações foram calculadas antes — a página consulta, não
+  recalcula.</p>
+</header>
+
+<section>
+  <div class="lab">
+    <div class="panel ctrl" id="ctrl"></div>
+    <div class="res">
+      <div class="big" id="big"></div>
+      <div class="panel">
+        <h3 style="margin-bottom:11px">Por que cada sugestão foi recusada</h3>
+        <div class="barra" id="barra"></div>
+        <div style="display:flex;gap:15px;flex-wrap:wrap;margin-top:11px;font-size:12px;color:var(--ink-2)">
+          <span class="lg"><i style="background:var(--critical)"></i>só tonalidade</span>
+          <span class="lg"><i style="background:var(--amber)"></i>só BPM</span>
+          <span class="lg"><i style="background:var(--good)"></i>aceita</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 style="margin-bottom:11px">O código que está rodando</h3>
+        <pre id="code"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div><h2>As 72 rodadas</h2>
+    <p class="lede">A linha verde é a combinação selecionada. Ordenado por recusa.</p></div>
+  <div class="panel scroll"><table id="hist"></table></div>
+</section>
+
+<section>
+  <div class="note">
+    <h3>O que este console não faz</h3>
+    <p>Ele <strong>não treina</strong> ao vivo — a página publicada é estática e não roda
+    Python. As 72 combinações foram calculadas por <code>src/p12_a_recusa_depende_dos_parametros.py</code> e
+    gravadas em <code>outputs/grade.json</code>. Mexer num controle consulta a grade.</p>
+    <p>Para varrer um parâmetro que não está aqui, edite o script, rode
+    <code>uv run python src/p12_a_recusa_depende_dos_parametros.py</code> e republique.</p>
+  </div>
+</section>
+</div>
+
+<script type="application/json" id="d">{"faixas": 4285, "grade": [{"k": 4, "margem": 0.02, "regra": "roda completa", "recusa": 0.8403, "so_tom": 0.5862, "so_bpm": 0.0525, "n": 17140}, {"k": 4, "margem": 0.02, "regra": "mesma posição", "recusa": 0.9437, "so_tom": 0.6896, "so_bpm": 0.0157, "n": 17140}, {"k": 4, "margem": 0.02, "regra": "ignorar tom", "recusa": 0.2541, "so_tom": 0.0, "so_bpm": 0.2541, "n": 17140}, {"k": 4, "margem": 0.04, "regra": "roda completa", "recusa": 0.798, "so_tom": 0.7485, "so_bpm": 0.0101, "n": 17140}, {"k": 4, "margem": 0.04, "regra": "mesma posição", "recusa": 0.9312, "so_tom": 0.8817, "so_bpm": 0.0032, "n": 17140}, {"k": 4, "margem": 0.04, "regra": "ignorar tom", "recusa": 0.0495, "so_tom": 0.0, "so_bpm": 0.0495, "n": 17140}, {"k": 4, "margem": 0.06, "regra": "roda completa", "recusa": 0.7903, "so_tom": 0.7791, "so_bpm": 0.0024, "n": 17140}, {"k": 4, "margem": 0.06, "regra": "mesma posição", "recusa": 0.9287, "so_tom": 0.9176, "so_bpm": 0.0007, "n": 17140}, {"k": 4, "margem": 0.06, "regra": "ignorar tom", "recusa": 0.0111, "so_tom": 0.0, "so_bpm": 0.0111, "n": 17140}, {"k": 4, "margem": 0.08, "regra": "roda completa", "recusa": 0.7888, "so_tom": 0.7855, "so_bpm": 0.0009, "n": 17140}, {"k": 4, "margem": 0.08, "regra": "mesma posição", "recusa": 0.9283, "so_tom": 0.925, "so_bpm": 0.0003, "n": 17140}, {"k": 4, "margem": 0.08, "regra": "ignorar tom", "recusa": 0.0033, "so_tom": 0.0, "so_bpm": 0.0033, "n": 17140}, {"k": 4, "margem": 0.1, "regra": "roda completa", "recusa": 0.7882, "so_tom": 0.7872, "so_bpm": 0.0004, "n": 17140}, {"k": 4, "margem": 0.1, "regra": "mesma posição", "recusa": 0.9281, "so_tom": 0.9271, "so_bpm": 0.0001, "n": 17140}, {"k": 4, "margem": 0.1, "regra": "ignorar tom", "recusa": 0.0011, "so_tom": 0.0, "so_bpm": 0.0011, "n": 17140}, {"k": 4, "margem": 0.12, "regra": "roda completa", "recusa": 0.788, "so_tom": 0.7878, "so_bpm": 0.0002, "n": 17140}, {"k": 4, "margem": 0.12, "regra": "mesma posição", "recusa": 0.9281, "so_tom": 0.9278, "so_bpm": 0.0001, "n": 17140}, {"k": 4, "margem": 0.12, "regra": "ignorar tom", "recusa": 0.0002, "so_tom": 0.0, "so_bpm": 0.0002, "n": 17140}, {"k": 6, "margem": 0.02, "regra": "roda completa", "recusa": 0.8467, "so_tom": 0.5665, "so_bpm": 0.0575, "n": 25710}, {"k": 6, "margem": 0.02, "regra": "mesma posição", "recusa": 0.9499, "so_tom": 0.6697, "so_bpm": 0.017, "n": 25710}, {"k": 6, "margem": 0.02, "regra": "ignorar tom", "recusa": 0.2802, "so_tom": 0.0, "so_bpm": 0.2802, "n": 25710}, {"k": 6, "margem": 0.04, "regra": "roda completa", "recusa": 0.8014, "so_tom": 0.7424, "so_bpm": 0.0122, "n": 25710}, {"k": 6, "margem": 0.04, "regra": "mesma posição", "recusa": 0.9368, "so_tom": 0.8779, "so_bpm": 0.0039, "n": 25710}, {"k": 6, "margem": 0.04, "regra": "ignorar tom", "recusa": 0.0589, "so_tom": 0.0, "so_bpm": 0.0589, "n": 25710}, {"k": 6, "margem": 0.06, "regra": "roda completa", "recusa": 0.7928, "so_tom": 0.7782, "so_bpm": 0.0036, "n": 25710}, {"k": 6, "margem": 0.06, "regra": "mesma posição", "recusa": 0.9342, "so_tom": 0.9196, "so_bpm": 0.0012, "n": 25710}, {"k": 6, "margem": 0.06, "regra": "ignorar tom", "recusa": 0.0146, "so_tom": 0.0, "so_bpm": 0.0146, "n": 25710}, {"k": 6, "margem": 0.08, "regra": "roda completa", "recusa": 0.7905, "so_tom": 0.7862, "so_bpm": 0.0013, "n": 25710}, {"k": 6, "margem": 0.08, "regra": "mesma posição", "recusa": 0.9333, "so_tom": 0.929, "so_bpm": 0.0004, "n": 25710}, {"k": 6, "margem": 0.08, "regra": "ignorar tom", "recusa": 0.0044, "so_tom": 0.0, "so_bpm": 0.0044, "n": 25710}, {"k": 6, "margem": 0.1, "regra": "roda completa", "recusa": 0.7898, "so_tom": 0.7884, "so_bpm": 0.0006, "n": 25710}, {"k": 6, "margem": 0.1, "regra": "mesma posição", "recusa": 0.9331, "so_tom": 0.9317, "so_bpm": 0.0002, "n": 25710}, {"k": 6, "margem": 0.1, "regra": "ignorar tom", "recusa": 0.0014, "so_tom": 0.0, "so_bpm": 0.0014, "n": 25710}, {"k": 6, "margem": 0.12, "regra": "roda completa", "recusa": 0.7895, "so_tom": 0.7891, "so_bpm": 0.0003, "n": 25710}, {"k": 6, "margem": 0.12, "regra": "mesma posição", "recusa": 0.933, "so_tom": 0.9326, "so_bpm": 0.0001, "n": 25710}, {"k": 6, "margem": 0.12, "regra": "ignorar tom", "recusa": 0.0004, "so_tom": 0.0, "so_bpm": 0.0004, "n": 25710}, {"k": 8, "margem": 0.02, "regra": "roda completa", "recusa": 0.8532, "so_tom": 0.5522, "so_bpm": 0.0616, "n": 34280}, {"k": 8, "margem": 0.02, "regra": "mesma posição", "recusa": 0.9527, "so_tom": 0.6516, "so_bpm": 0.0183, "n": 34280}, {"k": 8, "margem": 0.02, "regra": "ignorar tom", "recusa": 0.3011, "so_tom": 0.0, "so_bpm": 0.3011, "n": 34280}, {"k": 8, "margem": 0.04, "regra": "roda completa", "recusa": 0.8063, "so_tom": 0.7376, "so_bpm": 0.0147, "n": 34280}, {"k": 8, "margem": 0.04, "regra": "mesma posição", "recusa": 0.9387, "so_tom": 0.87, "so_bpm": 0.0043, "n": 34280}, {"k": 8, "margem": 0.04, "regra": "ignorar tom", "recusa": 0.0687, "so_tom": 0.0, "so_bpm": 0.0687, "n": 34280}, {"k": 8, "margem": 0.06, "regra": "roda completa", "recusa": 0.796, "so_tom": 0.7787, "so_bpm": 0.0044, "n": 34280}, {"k": 8, "margem": 0.06, "regra": "mesma posição", "recusa": 0.9358, "so_tom": 0.9185, "so_bpm": 0.0014, "n": 34280}, {"k": 8, "margem": 0.06, "regra": "ignorar tom", "recusa": 0.0173, "so_tom": 0.0, "so_bpm": 0.0173, "n": 34280}, {"k": 8, "margem": 0.08, "regra": "roda completa", "recusa": 0.7932, "so_tom": 0.7881, "so_bpm": 0.0016, "n": 34280}, {"k": 8, "margem": 0.08, "regra": "mesma posição", "recusa": 0.9349, "so_tom": 0.9298, "so_bpm": 0.0005, "n": 34280}, {"k": 8, "margem": 0.08, "regra": "ignorar tom", "recusa": 0.0051, "so_tom": 0.0, "so_bpm": 0.0051, "n": 34280}, {"k": 8, "margem": 0.1, "regra": "roda completa", "recusa": 0.7923, "so_tom": 0.7907, "so_bpm": 0.0007, "n": 34280}, {"k": 8, "margem": 0.1, "regra": "mesma posição", "recusa": 0.9346, "so_tom": 0.933, "so_bpm": 0.0002, "n": 34280}, {"k": 8, "margem": 0.1, "regra": "ignorar tom", "recusa": 0.0016, "so_tom": 0.0, "so_bpm": 0.0016, "n": 34280}, {"k": 8, "margem": 0.12, "regra": "roda completa", "recusa": 0.7919, "so_tom": 0.7915, "so_bpm": 0.0003, "n": 34280}, {"k": 8, "margem": 0.12, "regra": "mesma posição", "recusa": 0.9344, "so_tom": 0.934, "so_bpm": 0.0001, "n": 34280}, {"k": 8, "margem": 0.12, "regra": "ignorar tom", "recusa": 0.0005, "so_tom": 0.0, "so_bpm": 0.0005, "n": 34280}, {"k": 10, "margem": 0.02, "regra": "roda completa", "recusa": 0.857, "so_tom": 0.5414, "so_bpm": 0.0639, "n": 42850}, {"k": 10, "margem": 0.02, "regra": "mesma posição", "recusa": 0.9548, "so_tom": 0.6392, "so_bpm": 0.0191, "n": 42850}, {"k": 10, "margem": 0.02, "regra": "ignorar tom", "recusa": 0.3156, "so_tom": 0.0, "so_bpm": 0.3156, "n": 42850}, {"k": 10, "margem": 0.04, "regra": "roda completa", "recusa": 0.8086, "so_tom": 0.7335, "so_bpm": 0.0154, "n": 42850}, {"k": 10, "margem": 0.04, "regra": "mesma posição", "recusa": 0.9406, "so_tom": 0.8655, "so_bpm": 0.0049, "n": 42850}, {"k": 10, "margem": 0.04, "regra": "ignorar tom", "recusa": 0.0751, "so_tom": 0.0, "so_bpm": 0.0751, "n": 42850}, {"k": 10, "margem": 0.06, "regra": "roda completa", "recusa": 0.7976, "so_tom": 0.7781, "so_bpm": 0.0045, "n": 42850}, {"k": 10, "margem": 0.06, "regra": "mesma posição", "recusa": 0.9372, "so_tom": 0.9177, "so_bpm": 0.0015, "n": 42850}, {"k": 10, "margem": 0.06, "regra": "ignorar tom", "recusa": 0.0195, "so_tom": 0.0, "so_bpm": 0.0195, "n": 42850}, {"k": 10, "margem": 0.08, "regra": "roda completa", "recusa": 0.7946, "so_tom": 0.7891, "so_bpm": 0.0015, "n": 42850}, {"k": 10, "margem": 0.08, "regra": "mesma posição", "recusa": 0.9362, "so_tom": 0.9307, "so_bpm": 0.0005, "n": 42850}, {"k": 10, "margem": 0.08, "regra": "ignorar tom", "recusa": 0.0056, "so_tom": 0.0, "so_bpm": 0.0056, "n": 42850}, {"k": 10, "margem": 0.1, "regra": "roda completa", "recusa": 0.7938, "so_tom": 0.7922, "so_bpm": 0.0007, "n": 42850}, {"k": 10, "margem": 0.1, "regra": "mesma posição", "recusa": 0.9359, "so_tom": 0.9343, "so_bpm": 0.0002, "n": 42850}, {"k": 10, "margem": 0.1, "regra": "ignorar tom", "recusa": 0.0016, "so_tom": 0.0, "so_bpm": 0.0016, "n": 42850}, {"k": 10, "margem": 0.12, "regra": "roda completa", "recusa": 0.7934, "so_tom": 0.7929, "so_bpm": 0.0003, "n": 42850}, {"k": 10, "margem": 0.12, "regra": "mesma posição", "recusa": 0.9358, "so_tom": 0.9352, "so_bpm": 0.0, "n": 42850}, {"k": 10, "margem": 0.12, "regra": "ignorar tom", "recusa": 0.0005, "so_tom": 0.0, "so_bpm": 0.0005, "n": 42850}], "margens": [0.02, 0.04, 0.06, 0.08, 0.1, 0.12], "regras": ["roda completa", "mesma posição", "ignorar tom"], "ks": [4, 6, 8, 10]}</script>
+<script>
+const D = JSON.parse(document.getElementById('d').textContent);
+const est = { k: 6, margem: 0.06, regra: "roda completa" };
+
+const TIPS = {
+  margem: `<b>Margem de BPM.</b> Quanto o andamento das duas faixas pode diferir e ainda
+    dar para mixar. DJ ajusta o pitch da faixa, mas acima de ~6% a música começa a soar
+    acelerada ou arrastada — voz fica esquisita primeiro.<br><br>
+    <b>Aumentar:</b> mais faixas passam, transição fica mais arriscada.<br>
+    <b>Diminuir:</b> mais seguro, menos opção.<br>
+    <b>Comece em 6%</b>, que é a convenção de manual.`,
+  regra: `<b>Regra de tonalidade.</b> Como decidir se dois tons combinam, pela roda de
+    Camelot.<br><br>
+    <b>Roda completa:</b> aceita mesma posição, uma acima, uma abaixo, ou trocar
+    maior↔menor. É o que DJ usa.<br>
+    <b>Mesma posição:</b> só tom idêntico. Seguro e restritivo demais.<br>
+    <b>Ignorar tom:</b> desliga a regra — serve de <b>controle</b>, para ver quanto da
+    recusa vem daqui.`,
+  k: `<b>Quantos vizinhos o kNN sugere.</b> O modelo acústico devolve as k faixas mais
+    próximas no espaço das 9 features.<br><br>
+    <b>Aumentar:</b> mais sugestões, e as últimas são progressivamente menos parecidas —
+    então a taxa de recusa tende a subir um pouco.<br>
+    <b>Diminuir:</b> só as mais próximas, resultado mais otimista.<br>
+    Este parâmetro <b>não muda o modelo</b>, muda quantas respostas dele você olha.`,
+};
+
+function celula(){
+  return D.grade.find(c => c.k === est.k && Math.abs(c.margem - est.margem) < 1e-9
+                      && c.regra === est.regra);
+}
+
+document.getElementById('ctrl').innerHTML = `
+  <div class="par">
+    <div class="par-h"><label>margem_bpm <span class="tip" tabindex="0">?<span class="box">${TIPS.margem}</span></span></label>
+      <span class="par-v" id="vm"></span></div>
+    <input type="range" id="rm" min="0" max="${D.margens.length-1}" step="1" value="2">
+    <div class="par-eff" id="em"></div>
+  </div>
+  <div class="par">
+    <div class="par-h"><label>regra_tom <span class="tip" tabindex="0">?<span class="box">${TIPS.regra}</span></span></label></div>
+    <div class="seg" id="sr">${D.regras.map(r=>
+      `<button data-r="${r}" aria-pressed="${r===est.regra}">${r}</button>`).join('')}</div>
+    <div class="par-eff" id="er"></div>
+  </div>
+  <div class="par">
+    <div class="par-h"><label>k_vizinhos <span class="tip" tabindex="0">?<span class="box">${TIPS.k}</span></span></label></div>
+    <div class="seg" id="sk">${D.ks.map(k=>
+      `<button data-k="${k}" aria-pressed="${k===est.k}">${k}</button>`).join('')}</div>
+    <div class="par-eff" id="ek"></div>
+  </div>`;
+
+function code(){
+  const r = est.regra === "ignorar tom" ? "True  <span class='cm'># regra desligada</span>"
+    : est.regra === "mesma posição" ? "cam[i] == cam[j]"
+    : "compativel(cam[i], cam[j])  <span class='cm'># ±1 na roda, ou trocar A↔B</span>";
+  return `<span class="cm"># src/p11_o_dj_aceitaria_o_knn.py — a regra, com os seus valores</span>
+<span class="kw">for</span> j <span class="kw">in</span> vizinhos[i][:<span class="val">${est.k}</span>]:
+    ok_bpm = <span class="kw">abs</span>(t[j] - t[i]) / t[i] &lt;= <span class="val">${est.margem.toFixed(2)}</span>
+    ok_tom = ${r}
+    <span class="kw">if not</span> (ok_bpm <span class="kw">and</span> ok_tom):
+        recusadas += 1   <span class="cm"># o DJ não conseguiria mixar</span>`;
+}
+
+function render(){
+  const c = celula(), ac = 1 - c.recusa;
+  document.getElementById('vm').textContent = (est.margem*100).toFixed(0) + '%';
+  document.getElementById('rm').value = D.margens.findIndex(m => Math.abs(m-est.margem)<1e-9);
+  document.querySelectorAll('#sr button').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === est.regra));
+  document.querySelectorAll('#sk button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.k === est.k));
+
+  document.getElementById('em').textContent =
+    `as duas faixas podem diferir até ${(est.margem*100).toFixed(0)}% no andamento`;
+  document.getElementById('er').textContent = est.regra === "ignorar tom"
+    ? "controle: só o BPM restringe" : est.regra === "mesma posição"
+    ? "só tom idêntico — o mais restritivo" : "o que DJ usa de verdade";
+  document.getElementById('ek').textContent = `avaliando ${c.n.toLocaleString('pt-BR')} sugestões`;
+
+  document.getElementById('big').innerHTML = [
+    [ (c.recusa*100).toFixed(1)+'%', 'o DJ <b>recusaria</b>', c.recusa > .5 ? 'c-crit' : 'c-good'],
+    [ (ac*100).toFixed(1)+'%', 'seriam aceitas', 'c-good'],
+    [ (c.so_tom*100).toFixed(1)+'%', 'recusadas <b>só por tonalidade</b>', 'c-crit'],
+    [ (c.so_bpm*100).toFixed(1)+'%', 'recusadas só por BPM', 'c-amber'],
+  ].map(([n,l,cls])=>`<div class="bc"><b class="${cls}">${n}</b><span>${l}</span></div>`).join('');
+
+  const outro = c.recusa - c.so_tom - c.so_bpm;
+  document.getElementById('barra').innerHTML =
+    `<i class="b-tom" style="width:${(c.so_tom+outro)*100}%">${c.so_tom>.08?'tom':''}</i>
+     <i class="b-bpm" style="width:${c.so_bpm*100}%">${c.so_bpm>.08?'bpm':''}</i>
+     <i class="b-ok" style="width:${ac*100}%">${ac>.08?'aceita':''}</i>`;
+  document.getElementById('code').innerHTML = code();
+
+  const ord = D.grade.slice().sort((a,b)=>b.recusa-a.recusa);
+  document.getElementById('hist').innerHTML =
+    '<thead><tr><th>k</th><th>margem</th><th>regra de tom</th><th>recusa</th><th>só tom</th><th>aceita</th></tr></thead><tbody>'
+    + ord.map(x=>`<tr class="${x===c?'now':''}"><td>${x.k}</td><td>${(x.margem*100).toFixed(0)}%</td>
+       <td>${x.regra}</td><td>${(x.recusa*100).toFixed(1)}%</td><td>${(x.so_tom*100).toFixed(1)}%</td>
+       <td>${((1-x.recusa)*100).toFixed(1)}%</td></tr>`).join('') + '</tbody>';
+}
+
+document.getElementById('rm').addEventListener('input', e => { est.margem = D.margens[+e.target.value]; render(); });
+document.getElementById('sr').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return; est.regra = b.dataset.r; render(); });
+document.getElementById('sk').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return; est.k = +b.dataset.k; render(); });
+render();
+</script>

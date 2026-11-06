@@ -1,0 +1,76 @@
+==============================================================================
+PERGUNTA   Quais correlacoes deste dataset sao armadilha?
+COMO       Matriz entre as continuas, mais o teste de quais pares sao
+           definicionais (uma coluna e' insumo da outra).
+LER ASSIM  Correlacao alta entre colunas que se definem uma pela outra nao e'
+           achado sobre musica — e' o algoritmo se correlacionando consigo
+           mesmo.
+PISO       O par mais forte NAO definicional e' o unico que diz algo sobre o
+           mundo.
+
+COMO LER OS NÚMEROS
+  pearson   correlacao linear entre duas colunas numericas, de -1 a +1
+     ler    0 = sem relacao linear. 0,5 e' relacao moderada. O sinal diz a
+            direcao
+  cuidado   so' enxerga RETA. E e' sensivel a massa concentrada num valor —
+            se 34% da coluna e' zero exato, ele mede a distancia entre dois
+            grupos, nao uma tendencia
+
+  spearman  correlacao de ORDEM: mede se uma sobe quando a outra sobe, mesmo
+            sem ser reta
+     ler    leia junto do Pearson. Se os dois concordam, a relacao e' solida
+  cuidado   quando Pearson e Spearman dao SINAIS OPOSTOS, desconfie: costuma
+            ser inflacao de zero
+
+  r2        R ao quadrado: quanto da variacao o modelo de regressao consegue
+            explicar
+     ler    1 e' perfeito, 0 e' inutil. R^2 = 0,20 significa que 80% da
+            variacao continua sem explicacao
+  cuidado   R^2 parece grande e engana. Traduza sempre para erro absoluto na
+            unidade original, e compare com o erro de chutar a mediana. O par
+            medido aqui esta' em 22-correlacoes.txt
+
+  mae       erro medio absoluto: de quanto o modelo erra, em media, na
+            unidade original
+     ler    MAE de 12 numa escala de 0 a 100 significa errar 12 pontos por
+            faixa, em media
+  cuidado   so' significa algo comparado ao MAE de chutar a mediana. Se o
+            modelo nao bate isso, ele nao serve
+==============================================================================
+
+89,583 faixas unicas
+
+=== 1. matriz entre as continuas — os pares mais fortes ===
+  +0.759   energy × loudness
+  -0.735   energy × acousticness
+  -0.585   loudness × acousticness
+  +0.488   danceability × valence
+  -0.434   loudness × instrumentalness
+  -0.328   instrumentalness × valence
+  +0.284   loudness × valence
+  +0.262   danceability × loudness
+
+=== 2. o par energy × loudness e' medida ou definicao? ===
+  Pearson: +0.759
+  O cartao define energy como medida PERCEPTUAL que combina faixa dinamica,
+  volume percebido, timbre, taxa de ataque e entropia. Ou seja: loudness e'
+  INSUMO de energy. Correlacionar os dois mede o algoritmo, nao a musica.
+
+=== 3. instrumentalness: por que Pearson mente aqui ===
+  com os zeros    : Pearson -0.328 | Spearman -0.332
+  sem os zeros    : Pearson -0.320
+  massa em zero   : 33.4%
+  34% num unico valor faz a nuvem virar duas nuvens. Pearson ajusta uma reta
+  entre elas e reporta 'relacao' que e' so' a distancia entre os dois grupos.
+
+=== 4. loudness mede musica ou masterizacao? ===
+  faixas 'remaster' :    903  loudness medio -8.53 dB
+  demais            : 88,680  loudness medio -8.47 dB
+  positivos (clipping): 68
+
+=== 5. A ARMADILHA POPULARITY ===
+  base correta para popularidade (uma linha por musica viva): 76,444
+  R2 das audio features           : 0.191
+  MAE do modelo                   : 12.7 pontos
+  MAE de chutar sempre a mediana  : 14.8 pontos
+  desvio-padrao de popularity     : 17.8

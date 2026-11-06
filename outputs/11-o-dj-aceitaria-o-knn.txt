@@ -1,0 +1,36 @@
+==============================================================================
+PERGUNTA   O kNN acustico serve para escolher a proxima musica de um set de
+           DJ?
+COMO       Compara os vizinhos acusticos com o que a regra de DJ aceita: BPM
+           ate 6% de diferenca E tonalidade adjacente na roda de Camelot.
+LER ASSIM  Taxa de recusa alta significa que soar parecido NAO e' o criterio
+           de quem monta set. As duas regras medem coisas diferentes.
+PISO       Se os criterios fossem equivalentes, a recusa seria proxima de
+           zero.
+
+COMO LER OS NÚMEROS
+  acaso     o que voce acertaria chutando, sem modelo nenhum
+     ler    todo resultado de acerto so' significa alguma coisa AO LADO dele.
+            Exemplo de conta: 35% parece pouco, mas contra 0,88% de acaso e'
+            40x. O numero DESTA rodada sai abaixo
+  cuidado   resultado sem acaso declarado nao pode ser avaliado. Se alguem
+            mostrar so' a acuracia, pergunte qual era o acaso
+==============================================================================
+
+catálogo de pista: 4,285 faixas
+
+=== 1. dos vizinhos que o kNN sugere, quantos o DJ aceitaria? ===
+  sugestões avaliadas : 34,280
+  o DJ ACEITARIA      : 6,992 (20.4%)
+  o DJ RECUSARIA      : 27,288 (79.6%)
+
+  por que recusaria:
+    só BPM              151  (0.4%)
+    só tonalidade    26,694  (77.9%)
+    os dois             443  (1.3%)
+
+=== 2. e o contrario: o DJ tem opcao? ===
+  faixas validas por semente (amostra de 400): mediana 569, min 29, max 910
+  sementes sem NENHUMA continuacao valida: 0
+
+  outputs/mvp.json escrito com 12 sementes

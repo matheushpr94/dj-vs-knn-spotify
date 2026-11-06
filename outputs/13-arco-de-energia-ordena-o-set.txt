@@ -1,0 +1,28 @@
+==============================================================================
+PERGUNTA   As audio features conseguem DECIDIR a ordem do set, ou so' servem
+           para gerar candidatos que a regra do DJ filtra?
+COMO       Monta 60 sets de 20 faixas com tres criterios sobre as MESMAS
+           restricoes de Camelot e BPM: vizinho mais proximo, energia alvo
+           crescente, e escolha ao acaso.
+LER ASSIM  'subida de energia' e' a correlacao entre posicao no set e
+           energia. Perto de +1 e' arco que sobe; perto de 0 e' passeio
+           aleatorio. E' isso que separa set de playlist embaralhada.
+PISO       O montador ao ACASO, sujeito as mesmas regras. Se o arco nao
+           superar o acaso, a ideia nao vale.
+
+COMO LER OS NÚMEROS
+==============================================================================
+
+
+montador       faixas    subida  deriva BPM  ampl. energia  posicoes  popularid.
+---------------------------------------------------------------------
+acaso            20.0    +0.028       +1.4%          0.249       7.0        34.5
+proximidade      20.0    -0.050       -0.9%          0.148       5.9        37.6
+arco             20.0    +0.971       +2.6%          0.147       7.5        39.9
+arco+pop         20.0    +0.779       -0.6%          0.161       7.7        75.2
+
+==================================================================
+O arco supera o acaso em subida de energia por +0.943.
+As features DECIDEM: o mesmo conjunto de restricoes, mudando so' o
+criterio de escolha, produz um set com forma em vez de passeio.
+Isso responde a critica — as 17 colunas nao ficam so' gerando candidato.

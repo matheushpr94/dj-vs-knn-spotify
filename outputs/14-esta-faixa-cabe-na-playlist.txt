@@ -1,0 +1,34 @@
+==============================================================================
+PERGUNTA   Da' para dizer se uma musica cabe numa playlist, so' pelas audio
+           features?
+COMO       Para cada grupo, calcula centro e largura das 9 features SEM a
+           faixa que esta' sendo pontuada, mede a distancia dela ao centro em
+           numero de larguras, e compara com uma faixa sorteada do catalogo.
+LER ASSIM  O escore e' 'quantas larguras de distancia'. Zero e' o centro. O
+           que importa nao e' o valor absoluto e sim a DIFERENCA entre quem
+           pertence e quem foi sorteado — e o acerto, que e' quantas vezes
+           quem pertence pontuou melhor.
+PISO       Faixa sorteada do catalogo. Sem modelo nenhum, o acerto seria 50%:
+           meio a meio. Tudo acima de 50% e' sinal.
+
+COMO LER OS NÚMEROS
+==============================================================================
+
+
+usando como playlist      grupos  pertence  sorteada   acerto   piso   efeito
+------------------------------------------------------------------------------
+genero                        40      0.76      1.36    77.5%  50,0%     0.91
+album                        300      0.82      2.30    85.4%  50,0%     1.00
+
+==============================================================================
+COMO LER
+==============================================================================
+  'pertence' e 'sorteada' sao distancias ao centro, em numero de larguras.
+  MENOR e' mais parecido. O modelo funciona se 'pertence' < 'sorteada'.
+  'acerto' e' a fracao de vezes em que isso aconteceu, e o piso e' 50%:
+  sem modelo nenhum, seria cara ou coroa.
+
+  HA' SINAL: 85.4% usando album.
+  E ATENCAO ao comparar os dois: album e' mais ESTREITO que genero, entao
+  acerto maior em album nao quer dizer 'album e' melhor playlist' — quer
+  dizer que o problema e' mais facil quando o grupo ja' e' homogeneo.

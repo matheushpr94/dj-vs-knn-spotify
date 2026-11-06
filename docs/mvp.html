@@ -1,0 +1,270 @@
+<title>O DJ e o Modelo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--ground:#EDEFF3;--panel:#F7F8FA;--panel-2:#E4E7ED;--line:#CDD3DC;--line-soft:#DDE2E9;
+ --ink:#161A20;--ink-2:#454D59;--ink-3:#5C6470;--blue:#2A6AA6;--amber:#C07600;--amber-ink:#8F5800;
+ --critical:#B12C43;--critical-soft:#F3E0E4;--good:#0F7A6B;--good-soft:#DCEDEA;
+ --on-blue:#FFFFFF;--on-good:#EDEFF3;--on-crit:#FFFFFF;--on-amber:#161A20;
+ --shadow:0 1px 2px rgba(22,26,32,.06),0 6px 18px -10px rgba(22,26,32,.18);--r:3px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --ground:#111419;--panel:#1A1E24;--panel-2:#232830;--line:#333A45;--line-soft:#272D36;
+ --ink:#E4E7EC;--ink-2:#A8B0BC;--ink-3:#868F9C;--blue:#5090D6;--amber:#BC8827;--amber-ink:#D9A344;
+ --critical:#E8788F;--critical-soft:#2E1F25;--good:#3BB49F;--good-soft:#16292A;
+ --on-blue:#111419;--on-good:#111419;--on-crit:#111419;--on-amber:#111419;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7)}}
+:root[data-theme="dark"]{--ground:#111419;--panel:#1A1E24;--panel-2:#232830;--line:#333A45;
+ --line-soft:#272D36;--ink:#E4E7EC;--ink-2:#A8B0BC;--ink-3:#868F9C;--blue:#5090D6;--amber:#BC8827;
+ --amber-ink:#D9A344;--critical:#E8788F;--critical-soft:#2E1F25;--good:#3BB49F;--good-soft:#16292A;
+ --on-blue:#111419;--on-good:#111419;--on-crit:#111419;--on-amber:#111419;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+ font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(24px,4vw,50px) clamp(14px,3vw,34px) 70px;
+ display:flex;flex-direction:column;gap:clamp(28px,3.6vw,44px)}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;text-wrap:balance;margin:0}
+h1{font-size:clamp(27px,4.6vw,44px);font-weight:800;letter-spacing:-.025em;line-height:1.05}
+h2{font-size:clamp(18px,2.2vw,23px);font-weight:800;letter-spacing:-.014em}
+h3{font-size:15px;font-weight:800}
+p{margin:0;max-width:64ch}
+code{font-family:"IBM Plex Mono",monospace;font-size:.88em;background:var(--panel-2);padding:1px 5px;border-radius:2px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.lede{color:var(--ink-2);font-size:clamp(15px,1.5vw,16.5px);max-width:64ch}
+header{display:flex;flex-direction:column;gap:14px;border-bottom:1px solid var(--line);padding-bottom:24px}
+section{display:flex;flex-direction:column;gap:17px}
+.shead{display:flex;flex-direction:column;gap:6px}
+.panel{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);
+ box-shadow:var(--shadow);padding:clamp(15px,2.2vw,22px)}
+/* placar */
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px}
+.pc{border:1px solid var(--line-soft);border-radius:var(--r);padding:17px;background:var(--panel);
+ display:flex;flex-direction:column;gap:5px;box-shadow:var(--shadow)}
+.pc.bad{border-color:var(--critical)} .pc.ok{border-color:var(--good)}
+.pc>b.c-crit{color:var(--critical)}
+.pc>b.c-good{color:var(--good)}
+.pc>b.c-amber{color:var(--amber-ink)}
+.pc>b.c-ink{color:var(--ink-2)}
+.pc>b{font-family:"IBM Plex Mono",monospace;font-size:31px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.pc span{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.pc span b{font-family:inherit;font-size:inherit;color:var(--ink);font-weight:600}
+/* player */
+.deck{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:900px){.deck{grid-template-columns:300px 1fr}}
+.seed{background:var(--panel);border:1px solid var(--blue);border-radius:var(--r);padding:17px;
+ display:flex;flex-direction:column;gap:11px;box-shadow:var(--shadow)}
+.seed .now{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:7px}
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:11px}
+.eq i{width:2.5px;background:var(--blue);border-radius:1px;animation:bump .9s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:.15s} .eq i:nth-child(3){animation-delay:.3s}
+@keyframes bump{0%,100%{height:3px}50%{height:11px}}
+.seed h3{font-size:17px;line-height:1.25}
+.seed .art{font-size:13px;color:var(--ink-2)}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.bd{font-family:"IBM Plex Mono",monospace;font-size:11.5px;padding:4px 10px;border-radius:100px;
+ background:var(--panel-2);color:var(--ink-2)}
+.bd.key{background:var(--blue);color:var(--on-blue);font-weight:600}
+select{width:100%;font-family:"IBM Plex Sans",sans-serif;font-size:13px;padding:8px 10px;
+ border:1px solid var(--line);border-radius:var(--r);background:var(--panel-2);color:var(--ink)}
+select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+/* roda */
+.roda{display:flex;flex-direction:column;align-items:center;gap:11px}
+.roda svg{max-width:100%;height:auto}
+.leg{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;font-size:12px;color:var(--ink-2)}
+.leg i{display:inline-flex;align-items:center;gap:6px;font-style:normal}
+.sw{width:11px;height:11px;border-radius:3px;flex:none}
+/* listas */
+.duas{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:820px){.duas{grid-template-columns:1fr 1fr}}
+.col{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);
+ overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.col-h{padding:13px 16px;display:flex;flex-direction:column;gap:2px}
+.col-h.knn{background:var(--critical);color:var(--on-crit)}
+.col-h.dj{background:var(--good);color:var(--on-good)}
+.col-h .sub{font-family:"IBM Plex Mono",monospace;font-size:10.5px;opacity:.94}
+.col-b{padding:6px 0}
+.faixa{display:grid;grid-template-columns:1fr auto;gap:11px;padding:10px 16px;
+ border-bottom:1px solid var(--line-soft);align-items:center}
+.faixa:last-child{border-bottom:0}
+.f-n{font-size:13.5px;line-height:1.3}
+.f-a{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.f-m{display:flex;gap:5px;align-items:center}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;padding:3px 7px;border-radius:3px;
+ white-space:nowrap;font-weight:600}
+.tag.ok{background:var(--good-soft);color:var(--good)}
+.tag.no{background:var(--critical-soft);color:var(--critical)}
+.tag.n{background:var(--panel-2);color:var(--ink-2);font-weight:400}
+.veredito{padding:11px 16px;font-size:12.5px;border-top:1px solid var(--line-soft);color:var(--ink-2)}
+.veredito b{color:var(--ink)}
+.note{border:1px solid var(--amber);background:var(--panel);border-radius:var(--r);
+ padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.note h3{color:var(--amber-ink)}
+.note p{font-size:13.5px;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">MVP · o modelo tentando e errando</div>
+  <h1>O DJ e o Modelo</h1>
+  <p class="lede">Dê play numa faixa e veja duas máquinas escolherem a próxima. Uma busca
+  o que <strong>soa parecido</strong>. A outra usa a regra que DJ usa de verdade:
+  <strong>BPM compatível e tonalidade adjacente</strong> na roda de Camelot — a mesma que
+  o djay Pro mostra no medidor.</p>
+</header>
+
+<section>
+  <div class="shead"><h2>O placar, antes de olhar caso a caso</h2></div>
+  <div class="placar" id="placar"></div>
+  <div class="note">
+    <h3>O kNN acerta o BPM por acidente e erra o tom por projeto</h3>
+    <p>Ele usa <code>tempo</code> como uma das nove features, então naturalmente puxa
+    faixas de andamento parecido — por isso só <strong>0,4%</strong> das recusas são por
+    BPM. Mas <code>key</code> e <code>mode</code> <strong>não estão</strong> no conjunto
+    de features. Ele é cego exatamente para o que decide a transição.</p>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <h2>Toque uma faixa</h2>
+    <p class="lede">A roda mostra onde a faixa está e quais posições um DJ aceitaria.</p>
+  </div>
+  <div class="deck">
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <select id="sel" aria-label="Escolher faixa"></select>
+      <div class="seed" id="seed"></div>
+    </div>
+    <div class="panel roda">
+      <svg id="wheel" viewBox="0 0 340 340" role="img" aria-label="Roda de Camelot"></svg>
+      <div class="leg">
+        <i><span class="sw" style="background:var(--blue)"></span>tocando agora</i>
+        <i><span class="sw" style="background:var(--good)"></span>transição aceita</i>
+        <i><span class="sw" style="background:var(--panel-2);border:1px solid var(--line)"></span>incompatível</i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <h2>As duas sugestões, lado a lado</h2>
+    <p class="lede">Mesma faixa tocando. À esquerda o que o modelo acústico sugere, com o
+    veredito do DJ em cada uma. À direita o que a regra aceita.</p>
+  </div>
+  <div class="duas">
+    <div class="col">
+      <div class="col-h knn"><h3>kNN acústico</h3>
+        <span class="sub">vizinhos mais próximos nas 9 audio features</span></div>
+      <div class="col-b" id="lknn"></div>
+      <div class="veredito" id="vknn"></div>
+    </div>
+    <div class="col">
+      <div class="col-h dj"><h3>Regra de DJ</h3>
+        <span class="sub">BPM ±6% · Camelot adjacente · e então o mais próximo</span></div>
+      <div class="col-b" id="ldj"></div>
+      <div class="veredito" id="vdj"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="note">
+    <h3>O que este MVP não é</h3>
+    <p>Não é recomendação de gosto — <strong>não existe uma única pessoa neste dataset</strong>,
+    nenhum ouvinte e nenhuma reprodução. É compatibilidade técnica de transição, que é
+    outra coisa e é verificável.</p>
+    <p>E a regra de DJ aqui é a versão de manual: BPM e tonalidade. DJ de verdade também
+    considera estrutura da faixa, ponto de entrada, energia da pista naquele momento e o
+    que já tocou. Nada disso está no dataset.</p>
+  </div>
+</section>
+</div>
+
+<script type="application/json" id="d">{"total": 4285, "aceita": 6992, "recusa": 27288, "motivos": {"só BPM": 151, "só tonalidade": 26694, "os dois": 443}, "sementes": [{"nome": "Ecstasy", "artista": "ATB", "bpm": 130, "camelot": "1A", "tom": "Sol# menor", "genero": "techno", "vizinhas": ["12A", "1A", "1B", "2A"], "knn": [{"nome": "Costa Del Sol (feat. Nadine Renee) - Mijango's Remix", "artista": "Bad Boy Bill;Mijango;Nadine Renee", "bpm": 128, "camelot": "1B", "tom": "Si maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Good Life (Buena Vida) - Tommy Onyx's Barcelona Mix", "artista": "Inner City", "bpm": 132, "camelot": "10A", "tom": "Si menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Lights - Sped Up Version", "artista": "Ellie Goulding;Speed Radio", "bpm": 133, "camelot": "3A", "tom": "Lá# menor", "genero": "edm", "bpm_ok": true, "tom_ok": false}, {"nome": "Hand Over Hand", "artista": "Rhythim Is Rhythim;Derrick May;May", "bpm": 127, "camelot": "1A", "tom": "Sol# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Magic Fly", "artista": "Felix Da Housecat", "bpm": 128, "camelot": "11B", "tom": "Lá maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Encore Une Fois - Future Breeze Edit", "artista": "Sash!;Future Breeze", "bpm": 133, "camelot": "11B", "tom": "Lá maior", "genero": "techno", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Costa Del Sol (feat. Nadine Renee) - Mijango's Remix", "artista": "Bad Boy Bill;Mijango;Nadine Renee", "bpm": 128, "camelot": "1B", "tom": "Si maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Hand Over Hand", "artista": "Rhythim Is Rhythim;Derrick May;May", "bpm": 127, "camelot": "1A", "tom": "Sol# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Into You", "artista": "Sonny Fodera;Sinéad Harnett", "bpm": 124, "camelot": "1B", "tom": "Si maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Bac N Da Day - Clepto's Mix", "artista": "Frankie Knuckles", "bpm": 127, "camelot": "12A", "tom": "Dó# menor", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Rusty Nails", "artista": "Moderat", "bpm": 128, "camelot": "1B", "tom": "Si maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Tenderness", "artista": "Orlando Voorn", "bpm": 132, "camelot": "12A", "tom": "Dó# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "Why Can't You Wait", "artista": "The Chainsmokers;Bob Moses", "bpm": 115, "camelot": "8B", "tom": "Dó maior", "genero": "edm", "vizinhas": ["7B", "8A", "8B", "9B"], "knn": [{"nome": "Memory Bank", "artista": "Dyro;Conro", "bpm": 115, "camelot": "9B", "tom": "Sol maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Under The Influence", "artista": "Chris Brown", "bpm": 117, "camelot": "8A", "tom": "Lá menor", "genero": "dance", "bpm_ok": true, "tom_ok": true}, {"nome": "Ocean Drive - Extended Mix", "artista": "Duke Dumont", "bpm": 115, "camelot": "1A", "tom": "Sol# menor", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Don't Give Up On Me Now", "artista": "R3HAB;Julie Bergan", "bpm": 115, "camelot": "12B", "tom": "Mi maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}, {"nome": "La Isla Bonita (Glee Cast Version) (feat. Ricky Mart", "artista": "Glee Cast;Ricky Martin", "bpm": 113, "camelot": "3B", "tom": "Dó# maior", "genero": "club", "bpm_ok": true, "tom_ok": false}, {"nome": "White Lies", "artista": "The Him", "bpm": 111, "camelot": "8A", "tom": "Lá menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}], "dj": [{"nome": "Memory Bank", "artista": "Dyro;Conro", "bpm": 115, "camelot": "9B", "tom": "Sol maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Under The Influence", "artista": "Chris Brown", "bpm": 117, "camelot": "8A", "tom": "Lá menor", "genero": "dance", "bpm_ok": true, "tom_ok": true}, {"nome": "White Lies", "artista": "The Him", "bpm": 111, "camelot": "8A", "tom": "Lá menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "VSOD - Velvet Sky of Dreams", "artista": "Tiga;Hudson Mohawke", "bpm": 118, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Sunny Days", "artista": "Armin van Buuren;Josh Cumbee", "bpm": 115, "camelot": "9B", "tom": "Sol maior", "genero": "trance", "bpm_ok": true, "tom_ok": true}, {"nome": "Stand By Me", "artista": "Toby Rose;Ben Hutcheson", "bpm": 118, "camelot": "9B", "tom": "Sol maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}]}, {"nome": "When The World Stops Turning - Quiet Mix", "artista": "Chris Malinchak", "bpm": 119, "camelot": "8A", "tom": "Lá menor", "genero": "deep-house", "vizinhas": ["7A", "8A", "8B", "9A"], "knn": [{"nome": "Nightcrawler", "artista": "Duke Dumont;Say Lou Lou", "bpm": 118, "camelot": "8B", "tom": "Dó maior", "genero": "techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Imagination", "artista": "Gorgon City;Katy Menditta", "bpm": 122, "camelot": "5A", "tom": "Dó menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Khamoshi", "artista": "Ritviz;Karan Kanchan", "bpm": 115, "camelot": "1B", "tom": "Si maior", "genero": "edm", "bpm_ok": true, "tom_ok": false}, {"nome": "Trust - Mia Dora Remix", "artista": "Romanthony;Mia Dora", "bpm": 120, "camelot": "6B", "tom": "Lá# maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Dancin (feat. Luvli) - Krono Remix", "artista": "Aaron Smith;Krono;Luvli", "bpm": 120, "camelot": "3A", "tom": "Lá# menor", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Black & Blue", "artista": "HUGEL;Benjamin Ingrosso", "bpm": 120, "camelot": "3A", "tom": "Lá# menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Nightcrawler", "artista": "Duke Dumont;Say Lou Lou", "bpm": 118, "camelot": "8B", "tom": "Dó maior", "genero": "techno", "bpm_ok": true, "tom_ok": true}, {"nome": "It's Allright", "artista": "Sterling Void;Paris Brightledge", "bpm": 120, "camelot": "8A", "tom": "Lá menor", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "no tears left to cry", "artista": "Ariana Grande", "bpm": 122, "camelot": "8A", "tom": "Lá menor", "genero": "dance", "bpm_ok": true, "tom_ok": true}, {"nome": "Don't You Want Me (feat. Darren Criss)", "artista": "Glee Cast;Darren Criss", "bpm": 120, "camelot": "8B", "tom": "Dó maior", "genero": "club", "bpm_ok": true, "tom_ok": true}, {"nome": "Şampiyon - Gürcell Remix", "artista": "Hadise", "bpm": 125, "camelot": "8B", "tom": "Dó maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Move Your Body (Elevation) [Club Mix]", "artista": "Xpansions", "bpm": 122, "camelot": "8B", "tom": "Dó maior", "genero": "techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "Beautiful Now", "artista": "Zedd;Jon Bellion", "bpm": 128, "camelot": "10A", "tom": "Si menor", "genero": "edm", "vizinhas": ["10A", "10B", "11A", "9A"], "knn": [{"nome": "In Your Eyes - Dante Klein Remix", "artista": "Steve Brian;Eric Lumiere;Dante Kle", "bpm": 126, "camelot": "12A", "tom": "Dó# menor", "genero": "trance", "bpm_ok": true, "tom_ok": false}, {"nome": "Red Lights", "artista": "Tiësto", "bpm": 125, "camelot": "6B", "tom": "Lá# maior", "genero": "trance", "bpm_ok": true, "tom_ok": false}, {"nome": "Blessed - Original Mix", "artista": "Tom Hangs;Shermanology", "bpm": 126, "camelot": "1A", "tom": "Sol# menor", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Through My Mind", "artista": "Firebeatz;Schella", "bpm": 126, "camelot": "7A", "tom": "Ré menor", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Silver Lining", "artista": "Andrew Rayel", "bpm": 125, "camelot": "4A", "tom": "Fá menor", "genero": "trance", "bpm_ok": true, "tom_ok": false}, {"nome": "I Wanna Dance With Somebody (Who Loves Me) (Glee Cas", "artista": "Glee Cast", "bpm": 128, "camelot": "1B", "tom": "Si maior", "genero": "club", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Fireflies (feat. Luciana)", "artista": "Bassjackers;Luciana", "bpm": 128, "camelot": "9A", "tom": "Mi menor", "genero": "progressive-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Deep Inside", "artista": "Maur", "bpm": 126, "camelot": "10A", "tom": "Si menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Human Touch", "artista": "Armin van Buuren;Sam Gray", "bpm": 127, "camelot": "10B", "tom": "Ré maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Don't You Worry Child", "artista": "Swedish House Mafia;John Martin", "bpm": 129, "camelot": "10B", "tom": "Ré maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Coming Home", "artista": "Dimitri Vangelis & Wyman;Mike Perr", "bpm": 128, "camelot": "10B", "tom": "Ré maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Every Little Step", "artista": "Garreth Maher", "bpm": 125, "camelot": "11A", "tom": "Fá# menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}]}, {"nome": "3D Print - Raw Version", "artista": "DJ Sneak", "bpm": 125, "camelot": "3A", "tom": "Lá# menor", "genero": "chicago-house", "vizinhas": ["2A", "3A", "3B", "4A"], "knn": [{"nome": "Hiding", "artista": "Hidden Empire;Artche", "bpm": 125, "camelot": "3B", "tom": "Dó# maior", "genero": "techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Cola - Club Mix", "artista": "CamelPhat;Elderbrook", "bpm": 122, "camelot": "2B", "tom": "Fá# maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Fixi", "artista": "Joachim Pastor", "bpm": 124, "camelot": "4A", "tom": "Fá menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Acid Is A Friend Of Mine", "artista": "Paul Johnson", "bpm": 125, "camelot": "9B", "tom": "Sol maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Kollera", "artista": "Dusty Kid", "bpm": 128, "camelot": "3A", "tom": "Lá# menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "In Time - Butler's Dub Mix", "artista": "Marshall Jefferson;Josh Butler", "bpm": 125, "camelot": "10A", "tom": "Si menor", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Hiding", "artista": "Hidden Empire;Artche", "bpm": 125, "camelot": "3B", "tom": "Dó# maior", "genero": "techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Fixi", "artista": "Joachim Pastor", "bpm": 124, "camelot": "4A", "tom": "Fá menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Kollera", "artista": "Dusty Kid", "bpm": 128, "camelot": "3A", "tom": "Lá# menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Rave", "artista": "Sam Paganini", "bpm": 125, "camelot": "4A", "tom": "Fá menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "In White Rooms", "artista": "Booka Shade", "bpm": 125, "camelot": "3A", "tom": "Lá# menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Moon Rocks", "artista": "Enrico Sangiuliano", "bpm": 125, "camelot": "3B", "tom": "Dó# maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "In Motion", "artista": "Theo Parrish", "bpm": 118, "camelot": "10B", "tom": "Ré maior", "genero": "detroit-techno", "vizinhas": ["10A", "10B", "11B", "9B"], "knn": [{"nome": "Don't Play", "artista": "Theo Parrish;Ava", "bpm": 118, "camelot": "9A", "tom": "Mi menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Mystery of Love - Mixed", "artista": "Mr. Fingers", "bpm": 119, "camelot": "9B", "tom": "Sol maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Say Hello", "artista": "Enamour;Meliha", "bpm": 121, "camelot": "8B", "tom": "Dó maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}, {"nome": "What To Do", "artista": "Guy Gerber", "bpm": 122, "camelot": "5A", "tom": "Dó menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "The Red Circle", "artista": "Le Castle Vania", "bpm": 120, "camelot": "3B", "tom": "Dó# maior", "genero": "club", "bpm_ok": true, "tom_ok": false}, {"nome": "Sound Of Stereo", "artista": "Model 500", "bpm": 119, "camelot": "1B", "tom": "Si maior", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Mystery of Love - Mixed", "artista": "Mr. Fingers", "bpm": 119, "camelot": "9B", "tom": "Sol maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Welcome To The Real World", "artista": "Frankie Knuckles;Adeva", "bpm": 120, "camelot": "10B", "tom": "Ré maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Fallen Funk", "artista": "Theo Parrish", "bpm": 117, "camelot": "10A", "tom": "Si menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Sick Travellin' Pt. 1", "artista": "Fritz Kalkbrenner", "bpm": 113, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Keep on Moving - Main Mix", "artista": "Frankie Knuckles;Nikki Richars", "bpm": 123, "camelot": "11B", "tom": "Lá maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Bridges In The Sky (feat. Maurits Colijn)", "artista": "Colyn;Maurits Colijn", "bpm": 123, "camelot": "10A", "tom": "Si menor", "genero": "techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "Ry - Edit", "artista": "Christian Löffler", "bpm": 123, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "vizinhas": ["10B", "8B", "9A", "9B"], "knn": [{"nome": "Brightest Lights (feat. POLIÇA)", "artista": "Lane 8", "bpm": 125, "camelot": "4A", "tom": "Fá menor", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Futurelovetheme", "artista": "Carl Craig", "bpm": 120, "camelot": "5A", "tom": "Dó menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Astronautin", "artista": "Stephan Bodzin", "bpm": 125, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Never (Colyn Remix)", "artista": "Joris Voorn;Colyn", "bpm": 124, "camelot": "5A", "tom": "Dó menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "What $ Love - Supernova Remix", "artista": "Romanthony;Supernova", "bpm": 123, "camelot": "3B", "tom": "Dó# maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Atlas", "artista": "Lane 8", "bpm": 122, "camelot": "2B", "tom": "Fá# maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Astronautin", "artista": "Stephan Bodzin", "bpm": 125, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Necessity", "artista": "Rampa", "bpm": 120, "camelot": "9B", "tom": "Sol maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "What Is Real - Deep in the Playa Mix", "artista": "Rodriguez Jr.;Liset Alea", "bpm": 123, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Epoque", "artista": "Joris Delacroix", "bpm": 125, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Something for Myself", "artista": "Delano Smith", "bpm": 120, "camelot": "9A", "tom": "Mi menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Liquid Code", "artista": "Louis & Clark", "bpm": 122, "camelot": "10B", "tom": "Ré maior", "genero": "techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "In My Mind", "artista": "Amelie Lens", "bpm": 140, "camelot": "3B", "tom": "Dó# maior", "genero": "minimal-techno", "vizinhas": ["2B", "3A", "3B", "4B"], "knn": [{"nome": "Wake Up", "artista": "Liquid Soul", "bpm": 138, "camelot": "11A", "tom": "Fá# menor", "genero": "trance", "bpm_ok": true, "tom_ok": false}, {"nome": "Everlasting", "artista": "Ghost Rider", "bpm": 138, "camelot": "11A", "tom": "Fá# menor", "genero": "trance", "bpm_ok": true, "tom_ok": false}, {"nome": "Recreate - Slam Rework", "artista": "Slam;Hertz", "bpm": 138, "camelot": "10A", "tom": "Si menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Lucid", "artista": "ONYVAA", "bpm": 138, "camelot": "8A", "tom": "Lá menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Ali Baba", "artista": "Interactive Noise", "bpm": 138, "camelot": "11A", "tom": "Fá# menor", "genero": "trance", "bpm_ok": true, "tom_ok": false}, {"nome": "Agate", "artista": "Astrix;Ritmo", "bpm": 138, "camelot": "4B", "tom": "Sol# maior", "genero": "trance", "bpm_ok": true, "tom_ok": true}], "dj": [{"nome": "Agate", "artista": "Astrix;Ritmo", "bpm": 138, "camelot": "4B", "tom": "Sol# maior", "genero": "trance", "bpm_ok": true, "tom_ok": true}, {"nome": "Monks", "artista": "Berg", "bpm": 138, "camelot": "3B", "tom": "Dó# maior", "genero": "trance", "bpm_ok": true, "tom_ok": true}, {"nome": "Rebellion (Bingo Bango Remix)", "artista": "Neelix;Bingo Bango", "bpm": 138, "camelot": "3A", "tom": "Lá# menor", "genero": "techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Universal Nation", "artista": "Push", "bpm": 138, "camelot": "4B", "tom": "Sol# maior", "genero": "trance", "bpm_ok": true, "tom_ok": true}, {"nome": "United", "artista": "Armin van Buuren;Vini Vici;Alok;Za", "bpm": 138, "camelot": "3B", "tom": "Dó# maior", "genero": "progressive-house", "bpm_ok": true, "tom_ok": true}, {"nome": "The Cure", "artista": "Robert Hood", "bpm": 133, "camelot": "3B", "tom": "Dó# maior", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "Your Body", "artista": "Biscits", "bpm": 127, "camelot": "9A", "tom": "Mi menor", "genero": "deep-house", "vizinhas": ["10A", "8A", "9A", "9B"], "knn": [{"nome": "Sommer in Berlin 2021 - Radio Mix", "artista": "Sven & Olav;Sven Kuhlmann", "bpm": 124, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "WTF (feat. Amber Van Day)", "artista": "HUGEL;Amber Van Day", "bpm": 124, "camelot": "10A", "tom": "Si menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "The Banjo Beat", "artista": "HAYASA G", "bpm": 130, "camelot": "3B", "tom": "Dó# maior", "genero": "house", "bpm_ok": true, "tom_ok": false}, {"nome": "To Do - Kaskade's Carry On Mix", "artista": "Mark Farina;Kaskade", "bpm": 126, "camelot": "8B", "tom": "Dó maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Madan", "artista": "Stylo;Space Motion", "bpm": 122, "camelot": "3A", "tom": "Lá# menor", "genero": "techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Drowning In You", "artista": "Lucas Estrada", "bpm": 126, "camelot": "4A", "tom": "Fá menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Sommer in Berlin 2021 - Radio Mix", "artista": "Sven & Olav;Sven Kuhlmann", "bpm": 124, "camelot": "9B", "tom": "Sol maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "WTF (feat. Amber Van Day)", "artista": "HUGEL;Amber Van Day", "bpm": 124, "camelot": "10A", "tom": "Si menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Truth", "artista": "Dustycloud", "bpm": 125, "camelot": "9B", "tom": "Sol maior", "genero": "club", "bpm_ok": true, "tom_ok": true}, {"nome": "Move Your Body", "artista": "Marshall Jefferson;Solardo", "bpm": 125, "camelot": "9A", "tom": "Mi menor", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Bounce Your Body to the Box - Miek Shannon's Flashba", "artista": "Kevin Saunderson", "bpm": 126, "camelot": "10A", "tom": "Si menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Nightlife", "artista": "Kolombo", "bpm": 124, "camelot": "8A", "tom": "Lá menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "Never Gonna Forget (with Diplo feat. Elderbrook)", "artista": "Black Coffee;Diplo;Elderbrook", "bpm": 120, "camelot": "10A", "tom": "Si menor", "genero": "deep-house", "vizinhas": ["10A", "10B", "11A", "9A"], "knn": [{"nome": "Nobody", "artista": "Gorgon City;DRAMA", "bpm": 120, "camelot": "3B", "tom": "Dó# maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Love's Got Me High - Jimpster Remix", "artista": "Terrence Parker", "bpm": 123, "camelot": "8A", "tom": "Lá menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Stand By Me", "artista": "Toby Rose;Ben Hutcheson", "bpm": 118, "camelot": "9B", "tom": "Sol maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Afterbloom (feat. Deza)", "artista": "MOTi;Gustavo Dotch;Deza", "bpm": 124, "camelot": "5A", "tom": "Dó menor", "genero": "progressive-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Reality", "artista": "Lost Frequencies;Janieck", "bpm": 122, "camelot": "12A", "tom": "Dó# menor", "genero": "edm", "bpm_ok": true, "tom_ok": false}, {"nome": "Drive - Edit", "artista": "Black Coffee;David Guetta;Delilah ", "bpm": 118, "camelot": "10A", "tom": "Si menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}], "dj": [{"nome": "Drive - Edit", "artista": "Black Coffee;David Guetta;Delilah ", "bpm": 118, "camelot": "10A", "tom": "Si menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Drive", "artista": "Black Coffee;David Guetta;Delilah ", "bpm": 118, "camelot": "10A", "tom": "Si menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Wonderjoy", "artista": "Felix Da Housecat", "bpm": 123, "camelot": "10B", "tom": "Ré maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "iPad", "artista": "The Chainsmokers", "bpm": 122, "camelot": "10B", "tom": "Ré maior", "genero": "edm", "bpm_ok": true, "tom_ok": true}, {"nome": "Stronger", "artista": "Robert Owens;Jamie Anderson", "bpm": 122, "camelot": "9A", "tom": "Mi menor", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "O Mera Dil", "artista": "Pablo Fierro;Mr Raoul K;Lady Parul", "bpm": 123, "camelot": "9A", "tom": "Mi menor", "genero": "deep-house", "bpm_ok": true, "tom_ok": true}]}, {"nome": "Welcome To The Warehouse", "artista": "Armando", "bpm": 131, "camelot": "10A", "tom": "Si menor", "genero": "chicago-house", "vizinhas": ["10A", "10B", "11A", "9A"], "knn": [{"nome": "CSE", "artista": "Reinier Zonneveld", "bpm": 133, "camelot": "3B", "tom": "Dó# maior", "genero": "techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Jurema", "artista": "Victor Ruiz", "bpm": 130, "camelot": "1B", "tom": "Si maior", "genero": "deep-house", "bpm_ok": true, "tom_ok": false}, {"nome": "And The Beat Goes On - Edit", "artista": "Alinka", "bpm": 128, "camelot": "11B", "tom": "Lá maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "Who Am I", "artista": "Alinka", "bpm": 128, "camelot": "8B", "tom": "Dó maior", "genero": "chicago-house", "bpm_ok": true, "tom_ok": false}, {"nome": "At the Heart of It All", "artista": "Surgeon", "bpm": 134, "camelot": "3A", "tom": "Lá# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "No Enemy no table", "artista": "Scan 7", "bpm": 130, "camelot": "1A", "tom": "Sol# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "Techno Music - M500 Version", "artista": "Model 500", "bpm": 130, "camelot": "10B", "tom": "Ré maior", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Darthouven Fish Men", "artista": "Drexciya", "bpm": 129, "camelot": "9A", "tom": "Mi menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Your Love - Director's Cut Signature Mix", "artista": "Frankie Knuckles;Director's Cut;Er", "bpm": 126, "camelot": "9A", "tom": "Mi menor", "genero": "chicago-house", "bpm_ok": true, "tom_ok": true}, {"nome": "Session 1", "artista": "Juan Atkins", "bpm": 136, "camelot": "9A", "tom": "Mi menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Groovin", "artista": "Scan 7", "bpm": 127, "camelot": "9A", "tom": "Mi menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Kaos - Juice Bar Mix", "artista": "Rhythim Is Rhythim;May Day;Derrick", "bpm": 134, "camelot": "10A", "tom": "Si menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}]}, {"nome": "Deep Throat", "artista": "Claude VonStroke", "bpm": 124, "camelot": "3B", "tom": "Dó# maior", "genero": "minimal-techno", "vizinhas": ["2B", "3A", "3B", "4B"], "knn": [{"nome": "North Star", "artista": "Tale Of Us", "bpm": 124, "camelot": "3A", "tom": "Lá# menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Force Fed the Meds!!!!!!", "artista": "Omar S", "bpm": 123, "camelot": "6A", "tom": "Sol menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Gymnastiks", "artista": "Richie Hawtin;Plastikman", "bpm": 124, "camelot": "1A", "tom": "Sol# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Astronautin - Hernan Cattaneo & Soundexile Remix", "artista": "Stephan Bodzin;Hernan Cattaneo;Sou", "bpm": 124, "camelot": "4A", "tom": "Fá menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Base Camp Alpha 808 - Original Mix", "artista": "Underground Resistance", "bpm": 127, "camelot": "11A", "tom": "Fá# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": false}, {"nome": "Conscious", "artista": "Ann Clue", "bpm": 125, "camelot": "8B", "tom": "Dó maior", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": false}], "dj": [{"nome": "North Star", "artista": "Tale Of Us", "bpm": 124, "camelot": "3A", "tom": "Lá# menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Prisma", "artista": "Aril Brikha", "bpm": 125, "camelot": "2B", "tom": "Fá# maior", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Sirens", "artista": "Marco Carola", "bpm": 124, "camelot": "3A", "tom": "Lá# menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Pattern Recognition", "artista": "Aril Brikha", "bpm": 126, "camelot": "3B", "tom": "Dó# maior", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Tardigrade's", "artista": "Omar S", "bpm": 124, "camelot": "3A", "tom": "Lá# menor", "genero": "detroit-techno", "bpm_ok": true, "tom_ok": true}, {"nome": "Butterflies", "artista": "Boris Brejcha", "bpm": 125, "camelot": "3A", "tom": "Lá# menor", "genero": "minimal-techno", "bpm_ok": true, "tom_ok": true}]}]}</script>
+<script>
+const D = JSON.parse(document.getElementById('d').textContent);
+const br = n => n.toLocaleString('pt-BR');
+let atual = 0;
+
+/* placar */
+const tot = D.aceita + D.recusa;
+document.getElementById('placar').innerHTML = [
+  ['bad', (D.recusa/tot*100).toFixed(1)+'%', `das ${br(tot)} sugestões do kNN o DJ <b>recusaria</b>`, 'c-crit'],
+  ['ok', (D.aceita/tot*100).toFixed(1)+'%', 'seriam aceitas', 'c-good'],
+  ['', (D.motivos['só tonalidade']/tot*100).toFixed(1)+'%', 'recusadas <b>só por tonalidade</b>', 'c-amber'],
+  ['', (D.motivos['só BPM']/tot*100).toFixed(1)+'%', 'recusadas só por BPM', 'c-ink'],
+].map(([c,n,l,cls])=>`<div class="pc ${c}"><b class="${cls}">${n}</b><span>${l}</span></div>`).join('');
+
+/* seletor */
+document.getElementById('sel').innerHTML = D.sementes.map((s,i)=>
+  `<option value="${i}">${s.nome} — ${s.artista}</option>`).join('');
+document.getElementById('sel').addEventListener('change', e => { atual = +e.target.value; render(); });
+
+/* roda de Camelot */
+const POS = [];
+for (let n = 1; n <= 12; n++) for (const l of ['B','A']) POS.push(n + l);
+function roda(sel, viz){
+  const cx = 170, cy = 170, svg = [];
+  const anel = { B: [128, 158], A: [86, 116] };
+  POS.forEach(p => {
+    const n = parseInt(p), l = p.slice(-1);
+    const [r0, r1] = anel[l];
+    const a0 = (n - 1) * 30 - 90 + 1.6, a1 = n * 30 - 90 - 1.6;
+    const rad = g => g * Math.PI / 180;
+    const P = (r, a) => [cx + r * Math.cos(rad(a)), cy + r * Math.sin(rad(a))];
+    const [x1,y1]=P(r1,a0), [x2,y2]=P(r1,a1), [x3,y3]=P(r0,a1), [x4,y4]=P(r0,a0);
+    const eh = p === sel, ok = !eh && viz.includes(p);
+    const fill = eh ? 'var(--blue)' : ok ? 'var(--good)' : 'var(--panel-2)';
+    const txt = eh ? 'var(--on-blue)' : ok ? 'var(--on-good)' : 'var(--ink-3)';
+    svg.push(`<path d="M${x1} ${y1}A${r1} ${r1} 0 0 1 ${x2} ${y2}L${x3} ${y3}A${r0} ${r0} 0 0 0 ${x4} ${y4}Z"
+      fill="${fill}" stroke="var(--panel)" stroke-width="1.5"/>`);
+    const [tx,ty] = P((r0+r1)/2, (a0+a1)/2);
+    svg.push(`<text x="${tx}" y="${ty}" fill="${txt}" font-family="IBM Plex Mono,monospace"
+      font-size="${eh?12:10.5}" font-weight="${eh?'600':'400'}" text-anchor="middle"
+      dominant-baseline="central">${p}</text>`);
+  });
+  svg.push(`<text x="${cx}" y="${cy-8}" fill="var(--ink-3)" font-family="IBM Plex Mono,monospace"
+    font-size="9.5" text-anchor="middle">B = maior</text>`);
+  svg.push(`<text x="${cx}" y="${cy+8}" fill="var(--ink-3)" font-family="IBM Plex Mono,monospace"
+    font-size="9.5" text-anchor="middle">A = menor</text>`);
+  document.getElementById('wheel').innerHTML = svg.join('');
+}
+
+function lista(arr, alvo, mostrarVeredito){
+  document.getElementById(alvo).innerHTML = arr.length ? arr.map(f => {
+    const tags = mostrarVeredito
+      ? `<span class="tag ${f.bpm_ok?'ok':'no'}">${f.bpm} BPM</span>
+         <span class="tag ${f.tom_ok?'ok':'no'}">${f.camelot}</span>`
+      : `<span class="tag n">${f.bpm} BPM</span><span class="tag ok">${f.camelot}</span>`;
+    return `<div class="faixa"><div><div class="f-n">${f.nome}</div>
+      <div class="f-a">${f.artista} · ${f.tom} · ${f.genero}</div></div>
+      <div class="f-m">${tags}</div></div>`;
+  }).join('') : '<div class="faixa"><div class="f-n">nenhuma faixa compatível</div></div>';
+}
+
+function render(){
+  const s = D.sementes[atual];
+  document.getElementById('seed').innerHTML =
+    `<div class="now"><span class="eq"><i></i><i></i><i></i></span>tocando agora</div>
+     <h3>${s.nome}</h3><div class="art">${s.artista}</div>
+     <div class="badges"><span class="bd">${s.bpm} BPM</span>
+       <span class="bd key">${s.camelot}</span>
+       <span class="bd">${s.tom}</span><span class="bd">${s.genero}</span></div>
+     <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);
+       border-top:1px solid var(--line-soft);padding-top:9px">
+       aceita: ${s.vizinhas.join(' · ')}</div>`;
+  roda(s.camelot, s.vizinhas);
+  lista(s.knn, 'lknn', true);
+  lista(s.dj, 'ldj', false);
+  const rej = s.knn.filter(f => !f.bpm_ok || !f.tom_ok).length;
+  document.getElementById('vknn').innerHTML =
+    `<b>${rej} de ${s.knn.length}</b> seriam recusadas — o DJ não consegue mixar.`;
+  document.getElementById('vdj').innerHTML =
+    `<b>${s.dj.length} de ${s.dj.length}</b> mixam. Entre as compatíveis, escolhemos as
+     acusticamente mais próximas.`;
+}
+render();
+</script>

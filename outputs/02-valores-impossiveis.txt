@@ -1,0 +1,54 @@
+==============================================================================
+PERGUNTA   Existe valor impossivel nas colunas? Zero que nao e' zero, BPM que
+           nao existe?
+COMO       Checa cada coluna contra o dominio documentado no cartao oficial
+           da Spotify, e procura marcador de ausencia disfarcado de valor.
+LER ASSIM  Valor fora do dominio e' defeito. Mas pico em exatamente zero
+           costuma ser censura ou falha de extracao, nao medida baixa.
+PISO       Um dado limpo teria 0% fora do dominio.
+==============================================================================
+
+114,000 linhas
+
+=== linhas com campo textual nulo ===
+                     track_id artists track_name  popularity track_genre
+65900  1kR4gIb7nGxHPI3D2ifs59     NaN        NaN           0       k-pop
+
+=== features [0,1]: fora do intervalo ===
+  danceability      min   0.000  max   0.985  fora: 0
+  energy            min   0.000  max   1.000  fora: 0
+  speechiness       min   0.000  max   0.965  fora: 0
+  acousticness      min   0.000  max   0.996  fora: 0
+  instrumentalness  min   0.000  max   1.000  fora: 0
+  liveness          min   0.000  max   1.000  fora: 0
+  valence           min   0.000  max   0.995  fora: 0
+
+=== valores impossiveis / sentinelas ===
+  tempo == 0 (BPM impossivel)          157  (0.14%)
+  duration_ms == 0                       1  (0.00%)
+  duration < 30s                        17  (0.01%)
+  duration > 10min                     603  (0.53%)
+  time_signature == 0 (invalido)       163  (0.14%)
+  loudness > 0 dB (clipping)            90  (0.08%)
+  popularity == 0                   16,020  (14.05%)
+  instrumentalness == 0 exato       38,763  (34.00%)
+
+=== dominio das categoricas ===
+  key             [np.int64(0), np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(6), np.int64(7), np.int64(8), np.int64(9), np.int64(10), np.int64(11)]
+  mode            [np.int64(0), np.int64(1)]
+  time_signature  [np.int64(0), np.int64(1), np.int64(3), np.int64(4), np.int64(5)]
+  explicit        [np.False_, np.True_]
+
+=== coerencia: tempo == 0 tem audio feature valida? ===
+  157 faixas. energy media 0.123 | danceability media 0.000 | popularity media 37.2
+  quantas tem TODAS as audio features zeradas: 1
+
+=== campo 'artists' multi-artista ===
+  linhas com ';' (mais de um artista): 30,075 (26.4%)
+  artists unicos como string crua      : 31,437
+  artistas individuais apos split      : 29,858
+
+=== mesma faixa, popularity divergente entre generos? ===
+  track_id com popularity divergente: 720
+  amplitude media da divergencia   : 1.7 pontos
+  amplitude maxima                 : 44 pontos
